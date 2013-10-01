@@ -1,0 +1,392 @@
+<HTML>
+    <HEAD>
+        <TITLE>Atlantis Little Helper</TITLE>
+    </HEAD>
+    <BODY>
+        <h2>Atlantis Little Helper</h2>
+        <p>
+            <h3>Contents:</h3>
+            <a href="#intro">Introduction</a><br>
+            <a href="#installconfig">Installation and configuration</a><br>
+            <div style="MARGIN-LEFT: 20px">
+                <a href="#compiling">Compiling the sources</a><br>
+                <a href="#install">Installation</a><br>
+                <a href="#install_win32">Installation on Windows</a><br>
+                <a href="#config">Configuration</a><br>
+            </div>
+            <a href="#unitprop">Unit properties</a><br>
+            <a href="#play">Features and Playing</a><br>
+            <div style="MARGIN-LEFT: 20px">
+                <a href="#map_legend">Map Legend</a><br>
+                <a href="#map_bimaps">Use bitmaps to display terrains</a><br>
+                <a href="#ally">Alliance support</a><br>
+                <a href="#pseudocomments">Pseudocomments (speciasl abilities)</a><br>
+                <a href="#python">Python enhancements</a><br>
+                <div style="MARGIN-LEFT: 20px">
+                    <a href="#py_unit_filter">Unit Filters</a><br>
+                </div>
+            </div>
+            <a href="#contacts">Downloads and contacts</a><br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <a name="intro"></a>
+            <h3>Inroduction</h3>
+            <li>
+            Atlantis Little Helper (ALH) is a client application for Atlantis PBEM game. It
+            is simple and it is intended to be as much compatible with different varieties
+            of Atlantis 4 as possible.
+            <li>
+            There were two design goals for ALH - simplicity and compatibility. ALH is not
+            overloaded with controls, it parses reports as little as possible and it is not
+            pretending to know everything about Atlantis ruleset. So new items, skills and
+            such would not cause it to crash.
+            <li>
+            ALH is an Open Source project. It is cross-platform (Windows/Unix/Mac), at
+            least it was tested on Linux and Windows.
+            <li>
+                ALH is available as source code and as compiled Windows and Linux binaries. <a name="installconfig">
+                </a>
+                <h3>Installation and configuration</h3>
+                        <p>
+                            <a name="compiling"></a>
+                            <h4>Compiling the sources</h4>
+                            ALH has been succesfully compiled on win32, Linux GTK, Mac OS X&nbsp;platforms.
+                            <br>
+                        &nbsp;
+                        <p></p>
+                        <li>
+                            Install wxWindows toolkit. If it is not in you distribution, download from <a href="http://www.wxwindows.org">
+                                www.wxwindows.org</a>. Versions 2.4.x, 2.6.x work fine. You will need both base system and development
+                        files.
+                        <li>
+                            If you want Python support, install Python (available from <a href="http://www.python.org">www.python.org</a>).
+                        Again, both base system and development files are needed. 
+                        <li>
+                        For win32 platform, set WX2 evironment variable to the path you have installed
+                        wxWindows into and PY24 to the Python's installation path. Then use ah.dsp file
+                        for VC++ compiler.
+                        <li>
+                            On *nux run
+                            <pre>
+./configure
+make
+</pre>
+                            <p>
+                                <a name="install"></a>
+                                <h4>Installation</h4>
+                        <li>
+                        ALH uses current directory for storing configuration and history files. So, you
+                        will need a separate directory for every game you are playing. And that
+                        directory must be a current directory when you are starting ALH.
+                        <li>
+                            Just copy ALH executable to some directory on the path and run it from the game
+                            directory.
+                            <p>
+                                <a name="install_win32"></a>
+                                <h4>Installation on Windows</h4>
+                        <li>
+                        ALH uses current directory for storing configuration and history files. So, you
+                        will need a separate directory for every game you are playing. And that
+                        directory must be a current directory when you are starting ALH. The simplest
+                        way to do it is just to copy ah.exe in every game directory. Or desktop
+                        shortcut may be created for each game, starting directory set to point to your
+                        game directory. And so on.
+                        <li>
+                            Windows file extension association may be created, so you will just have to
+                            click on a report file to run ALH. If you placed ALH into, say, d:\bin, then
+                            use the next line for "Application used to perform action" when creating an
+                            association: d:\bin\ah.exe "%1" This is yet another way to handle the current
+                            directory requirement.
+                            <p>
+                                <a name="config"></a>
+                                <h4>Configuration</h4>
+                        <li>
+                            ALH stores configuration data in two files:
+                            <div style="MARGIN-LEFT: 20px">
+                                ah.cfg contains client configuration, such as windows positions and sizes.<br>
+                                ah.st.cfg contains game specific data, such as item descriptions or report file
+                                names.<br>
+                            </div>
+                        <li>
+                        There are user interfaces for the most common configuration tasks. For example,
+                        fonts and colors can be changed from Menu/View/Options. Column sets in the unit
+                        lists can be modified from Menu/Windows/List Columns/...
+                        <li>
+                            Config files can be modified manually as well. <a name="config_sections"></a>
+                        <li>
+                            Config file sections of interest are:
+                            <pre>    [ALIASES]        - In this section aliases must be in underscored
+                    form, like Horse_Training. In orders both forms
+                    are valid, so it ok to write "Horse Training"
+                    as well.
+format:
+    alias  = name
+
+
+    [COMMON]         - common settings
+values:
+    HEX_SIZE_LIST    - comma separated list of hex sizes
+    MEN_THRESHOLD    - if number of your men in a hex is bigger then
+                       this number, thick bullet will be displayed on
+                       the map.
+    REPORT_CACHE_MAX - how many reports to keep in memory.
+    BRIGHTNESS_DELTA - difference in brightnes between normal and
+                       read-only edit panes.
+    DECORATE_ORDERS  - add some comments to the generated order file.
+    LEAD_SKILL_BONUS - Leaders and heroes skill bonus for Arcadia games.
+    TAX_PER_TAXER    - how much silv each taxer collects per turn.
+    CHECK_FACTION_X_NEW_Y - 1 to check, 0 to not check if actual FACTION X NEW Y unit exists.
+                       Of course, you need faction's X report and orders for the check.
+    BATTLE_STATISTICS- 0 to disable battle statistics. Checked during report load                   
+
+
+    [LIST_COL_UNIT_&lt;set name&gt;] - set of columns to be diplayed in the unit list
+format:
+    sequence  = width, flags, <a href="#unitprop">property</a>, column_name
+
+    sequence    - order in which columns will appear in the unit list
+    width       - column width, easily changed with a mouse :)
+    flags       - 0 for left alignment, 1 for right alignment
+    property    - <a href="#unitprop">property</a> name, alias or group name
+    column_name - display name for the column
+
+
+    [UNIT_PROPERTY_GROUPS] - unit <a href="#unitprop">property</a> groups which can be displayed
+                            in the unit list as columns
+format:
+    group_name  = comma_separated_list_of_property_names
+values:
+    junk_items  - items you do not need, used for popup menu action
+                discarding junk items.
+    trade_items - used to calc trade points for buying them.
+    men         - used to find out if a particular item in unit's posession is a men
+    mag_skills  - used to find out if a skill is a magic skill, needed for Arcadia
+
+
+    [PANE_MAP]   - settings for the map panel
+values:
+    DASH_BAD_ROADS - show bad roads by dashes or by color
+    WALL_WIDTH     - line thickness for drawing walls.
+    FLAG_WIDTH     - line thickness for drawing flags.
+    ROAD_WIDTH     - line thickness for drawing roads.
+
+    [MAX_SKILL_LEVELS] - maximum skill levels for races
+    race = speciallevel, defaultlevel, comma separated list of special skills
+
+    [MAX_SKILL_LEVELS_MAGIC] - maximum magic skill levels for race heroes (Arcadia)
+    race = speciallevel, defaultlevel, comma separated list of special skills
+
+    [RESOURCE_LAND]
+    LandType = comma separated list of advanced resources, example:
+    Forest   = IRWD, YEW
+
+    [RESOURCE_SKILL]
+    skill = comma separated list of resources and required skills, example:
+    LUMB = IRWD 3, YEW 5
+
+    [STRUCTURES] - structures and comma-separated list of their attributes.
+                   The following attributes are possible:
+    MOBILE        - it is ship
+    MIN_POWER NN  - value of minimum required number of sailors
+    MAX_LOAD  NN  - ships capacity
+    HIDDEN        - special skills required to see the structure
+    ROAD_N        - Road N
+    ROAD_NE       - Road NE
+    ROAD_NW       - Road NW
+    ROAD_S        - Road S
+    ROAD_SE       - Road SE
+    ROAD_SW       - Road SW
+    SHAFT         - It is shaft
+    For example:
+        Balloon = MOBILE, MIN_POWER 10, MAX_LOAD 800
+
+
+</pre>
+                            <a name="unitprop"></a>
+                            <h3>Unit properties</h3>
+                        <li>
+                        Units have properties. Every item unit posess or skill it has is a property.
+                        Short form of an item/skill name is a property name. Undescore is appended to a
+                        skill name to distinguish it from an item name. For example, HORS property
+                        specifies how many horses unit has and HORS_ specifies unit's skill level in
+                        horse training.
+                        <li>
+                        Unit properties are used to display units in the lists and process orders.
+                        <li>
+                        Underscores are only used for unit's skill properties, in orders skill names
+                        are used as usual!
+                        <li>
+                            Built-in unit properties are:
+                            <pre>    id                - unit id
+    name              - unit name
+    description       - full unit description
+    factionid         - faction id
+    faction           - faction name
+    landid            - id of region the unit is in
+    structid          - id of a structure the unit is inside
+    structowner       - is unit an owner of a structure?
+    structname        - name of a structure the unit is inside
+    comments          - the first comment line of default orders/comments
+                        pane (the first character of a comment line is ';')
+    orders            - orders
+    teaching          - shows how many students per teacher this unit is
+                        teaching (rounded up), or how many days of
+                        teaching the unit receives (rounded down).
+    weight            - unit's weight.
+    movement          - movement mode.
+    sequence          - report's order of units.
+    flags_standard    - standard unit flags, condensed into string.
+    flags_custom      - custom unit flags, comma-separated.
+    flags_custom_abbr - custom unit flags, numbers condensed into string.
+</pre>
+                        <li>
+                            It is possible to assign an <a href="#config_sections">alias</a>
+                        to a property name. Default aliases are defined based on 4.0.4 source code.
+                        Aliases are not deducted from the report, they are read from the config file!
+                        <li>
+                            Properties can be combined into <a href="#config_sections">groups</a>
+                        in the [UNIT_PROPERTY_GROUPS] section.
+                        <li>
+                            When defining a group, only property names can be used. Aliases and groups are
+                            disabled here since they slow down display significantly. 
+            <a name="play"></a>
+                            <h3>Features and Playing</h3>
+                        <li>
+                        ALH accepts report file name as a command line parameter.
+                        <li>
+                        ALH processes GIVE, BUY, SELL, FORM, STUDY, TEACH, CLAIM, LEAVE, ENTER,
+                        PROMOTE, MOVE, SAIL, ADVANCE, TURN/ENDTURN, ATTACK, ASSASSINATE, STEAL, GUARD,
+                        AVOID, BEHIND, REVEAL, HOLD, NOAID, CONSUME, NOCROSS, TAX, AUTOTAX orders.
+                        <li>
+                        Try right-clicking and double-clicking everywhere! There are many actions
+                        performed this way. For example, double-clicking in the Errors and Messages
+                        window will select a corresponding unit and/or hex.
+                        <li>
+                        There are hotkeys to make writing orders easier while in the same hex:
+                        <br>Ctrl-U  goto Unit list
+                        <br>Ctrl-O  goto Orders pane
+                        <br>Ctrl-N  select next unit (while focus stays the same pane)
+                        <br>Ctrl-P  select previous unit (while focus stays the same pane)
+                        <li>
+                        ALH may become confused when a new plane appears in a report. In this case just
+                        click a couple of times on plane switching/centering buttons and everything
+                        will be back to normal.
+                        <li>
+                            In the reports regions' X and Y coordinates must be in the range [-2048 ..
+                            2047], maximum number of planes is 256. Faction and unit ids must not exceed 65535.
+			
+			
+			<a name="map_legend"></a>
+                            <h4>Map Legend</h4>
+                        <li>
+                        There is a number of icons which could be displayed in the map:
+                        <li>
+                        '$' specifies taxed regions.
+                        <li>
+                        'P' specifies regions with production activities.
+                        <li>
+                        Pyramid represents a generic object.
+                        <li>
+                        Inverted Pyramid is a ship.
+                        <li>
+                        Ladder is a shaft.
+                        <li>
+                        A square with hole in it is a gate.
+                        <li>
+                            Line is a road. A bad road is dashed line or thin line. Dashing does not work
+                            on Windows. <a name="map_bimaps"></a>
+                            <h4>Use bitmaps to display terrains</h4>
+                        <li>
+                        Get a set of windows bitmap files you want to use for the terrain. File names
+                        must correspond to terrains, for example bitmap for forest must be called
+                        'forest.bmp'.
+                        <li>
+                            Place bitmaps into your game folder. <a name="ally"></a>
+                            <h4>Alliance support</h4>
+                        <li>
+                        Allies' reports can be joined to the player's report. It will combine
+                        visibility of units, hexes and such.
+                        <li>
+                        Allies' units can be given orders just like player's units.
+                        <li>
+                        Joining can be done through Menu/File/Join or all the reports can be given in
+                        the command line.
+                        <li>
+                        Map fragments can be joined as well. Of course, map fragments must be in the
+                        natural format, the one used in the reports!
+
+
+
+                        <li>
+                        Map fragments can be exported as well. It is possible to drag mouse on the map
+                        selecting an area, and then export that area. <a name="python"></a>
+
+                            <h4>Pseudocomments (speciasl abilities)</h4>
+                            <a name="pseudocomments"></a>
+                        Pseudocomments are special comments which allow to modify the way how a command
+                        in the orders is executed. <br>
+                        The following pseudocommands are supported: <br><br>
+                        <li>
+                        <FONT SIZE=+1>  $ne  </FONT> - ignore warnings and errors. If error happens, it
+                        will affect the command as usual, however, no indication of the error will be given. <br>
+                        For example, <br><br>
+                        <FONT SIZE=+1> @give 123 all iron ;$ne  </FONT><br><br>
+                        will not keep annoying you if unit 123 does not have any iron.
+
+                        <li>
+                        <FONT SIZE=+1>  $get N item </FONT> - will get N items. N can be negative.
+                        Useful when ALH does not know about
+                        side effects of some commands, such as price of casting a spell. Example:<br><br>
+                        <FONT SIZE=+1> cast Magic_Shoe_Making ;$get -100 silv  </FONT><br><br>
+
+
+
+                            <h4>Python enhancements</h4>
+                            <a name="py_unit_filter"></a>
+                            <h4>Python unit filters</h4>
+                        <li>
+                        Both Python and conventional filters are supported.
+                        <li>
+                        When making conventional filter, corresponding Python filter is constructed in
+                        parallel to give some help.
+                        <li>
+                            Unit filter is a Python expression returning true or false, for example
+                            <pre>   SILV &lt; 0 </pre>
+                        <li>
+                        Filter is executed in the context of a unit. In other words, unit properties
+                        are global Python variables.
+                        <li>
+                            Python filters are more flexible, allowing to compare unit properties, for
+                            example. Consider the following filter
+                            <pre>   LEAD == 0 and SILV &gt; MEN*10*12 and (SWOR &gt;= MEN or XBOW &gt;= MEN) </pre>
+                            which returns all armed non-leader units having enough silv for a year. <a name="contacts">
+                            </a>
+                        <li>
+                            It is possible to use functionality in Python modules for processing filters.
+                            All required imports should be included in ah.common.py file. By default it
+                            imports only string module, which allows advanced string filtering. For example, the
+                            following filter will return all avoiding units: <br>
+                            <pre>   string.find(flags_standard, "a") >= 0</pre>
+                            <br>
+
+
+	<h3>Downloads and contacts</h3>
+		<li>
+			The latest version of Atlantis Little Helper is available for download from <a href="http://www.geocities.com/pbemah">
+			www.geocities.com/pbemah<a>.
+		<li>	ALH was designed and developed by <a href="mailto:mshariy@shaw.ca">Max Shariy</a>. <br>
+			<ul>
+			<li>Some valuable contributions received from <a href="mailto:shar1@arrakis.es">Sh'Arcashmo</a>. <br>
+			<li>The new ALH website design by <a href="mailto:celebluva@ngi.it"> Giovanni Baldini </a>. <br>
+			<li>The new map window appearance designed and developed by <a href="mailto:jan.rietema@web.de"> Jan Rietema </a>.
+			<li> <a href="mailto:Atlantisdev@phantasia.org">Loriaki</a> made sure it works on OS X and provided build for it.
+			</ul>
+		</li>
+		<li>
+		Bugs can be reported at the <a href="http://sourceforge.net/tracker/?atid=519782&amp;group_id=68020&amp;func=browse"> sourceforge project location</a>,
+                or mailed directly to <a href="mailto:mshariy@shaw.ca">Max Shariy</a>.
+			
+    </BODY>
+</HTML>

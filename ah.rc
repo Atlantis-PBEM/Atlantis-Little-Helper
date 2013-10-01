@@ -1,0 +1,20 @@
+#include "wx/msw/wx.rc"
+
+icon_logo      ICON    "bitmaps/icon_logo.ico"
+
+open           BITMAP  "bitmaps/open.bmp"
+centerout      BITMAP  "bitmaps/centerout.bmp"
+nextturn       BITMAP  "bitmaps/nextturn.bmp"
+prevturn       BITMAP  "bitmaps/prevturn.bmp"
+lastturn       BITMAP  "bitmaps/lastturn.bmp"
+lastvisitturn  BITMAP  "bitmaps/lastvisitturn.bmp"
+planedwn       BITMAP  "bitmaps/planedwn.bmp"
+planeup        BITMAP  "bitmaps/planeup.bmp"
+prevzoom       BITMAP  "bitmaps/prevzoom.bmp"
+showcoord      BITMAP  "bitmaps/showcoord.bmp"
+shownames      BITMAP  "bitmaps/shownames.bmp"
+zoomin         BITMAP  "bitmaps/zoomin.bmp"
+zoomout        BITMAP  "bitmaps/zoomout.bmp"
+findhex        BITMAP  "bitmaps/findhex.bmp"
+
+

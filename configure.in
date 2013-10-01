@@ -1,0 +1,38 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(ahapp.h)
+AC_CONFIG_HEADER(config.h)
+
+
+dnl Checks for programs.
+AC_PROG_CXX
+
+dnl Checks for header files.
+AC_HEADER_STDC
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_SIZE_T
+
+dnl Checks for library functions.
+AC_CHECK_FUNCS(strdup)
+
+AC_PROG_PYTHON_AH
+
+WXCONFIG=wx-config
+AC_ARG_WITH(wx-config,
+[[  --with-wx-config=FILE     Use the given path to wx-config when determining
+                            wxWidgets configuration; defaults to "wx-config"]],
+[
+    if test "$withval" != "yes" -a "$withval" != ""; then
+        WXCONFIG=$withval
+    fi
+])
+
+AC_PROG_WXWINDOWS_AH
+
+
+
+
+#AC_OUTPUT(Makefile config.h)
+AC_OUTPUT(Makefile)

@@ -1,0 +1,273 @@
+
+new:
+  - use compatible bitmap to draw the map pane
+  - reverse sort order for unit list
+  - map locator window
+  - draw an edge line on the map
+  - display unit data in tabular form, switch for raw/tabular
+  - Unit history, keep faction no in case they stop revealing faction
+  - Optimize CStr class for fast read.
+  - make a composite configurable property to display a set of skills, in a form like
+    "c2r3s1" for comb 2, ridi 3, stea 1.
+  - Get file masks for saving reports/loading orders etc from config.
+  - make adding new units in the end optional
+  - Make edit pane to be shown in a separate modal window when doubleclicked.
+  - Show bad weather on the map.
+
+  - Put spin buttons for scrolling on the coordinate panes, since some space is available.
+  - Improve performance. Rewrite TPropertyHolder to be based on hash instead of collection.
+    Also provide a way to add class member variable to the hash (maybe as read-only), so all
+    properties are accessed in uniform way eliminating need for virtual functions.
+  - Redo group properties - store them as regular properties, update when updating regulars.
+    Thus reading will be much faster.
+
+  - JT: A minimap.
+
+  - Export of units and multiple selection of units for export
+
+  - Editor to add/modify item weights etc., especially new unknown items.
+  - Apply default orders if the unit has only comments in the orders, not empty orders.
+    Could be repeating orders, like @;blah-blah
+  - GIVE XXX ALL <GROUP> orders. And SEND!
+
+  - Generate some hex statistics.
+  - Parse River-only exits for Arcadia III.
+Exits:
+� North : chasm (18,18,underdeep) in The Wyalla trick, River.
+� Southeast : chasm (19,21,underdeep) in The Wyalla trick, River.
+
+  - a list of names in config and unit menu item to generate name
+  - Save plane config by name since plane no may be changed
+  - sort planes in order described in the config
+  - Planes ordering is not quite correct, the new plane showing up in a report will always be
+    appended at the end.
+  - Python-based filter for hexes:
+> I've being thinking for a long time about providing Python-based filters for
+> the hexes, so a marker would be displayed for a hex if filter returns true
+> for it. Will it do? The only problem here I am somewhat limited in time, so
+> am not sure how soon it can be �done.
+
+Something like that, but with different colours - eg. white if in the top
+90-100%, down to black if in the bottom 0-10%, with different shades in between.
+You could provide some sort of python expression, such as "men", or
+"men/silver", and it could calculate it for all units in the region.
+
+  - Higlight all destination regions for moving units.
+  - When giving to another faction's new unit, check if it exists and update target properties
+
+
+=====================================================
+
+finished:
+  - default order name for the first save
+  - show unit-owner of a structure
+  - change sort order, filter - keep selected unit
+  - come back to hex - keep selected unit
+  - change hex - keep filter (optionally)
+  - store ships and gates history properly
+  - the map is a ring, west goes to east. Link them.
+  - make property group recursive - include group into group - REJECTED, too slow
+  - make center/local menu commanmds adjustable
+  - run orders when unit list is long, keep selection
+  - default unit commands
+  - exit description may take more then one line - parse correct!
+  - store report file names
+  - navigate reports
+  - parse events to determine and display taxed hexes
+  - parse events to determine and display hexes with production
+  - handle spaces in struct names
+  - GIVE UNIT command
+  - show unit movements on the map
+  - congigurable hex sizes.
+  - parse events to determine and display battles (show a cross only)
+  - process 'GIVE FACTION 16 NEW 1' orders
+  - Position of the first unit in the unit list is not maintained when order executed - it is
+    very annoying. Maybe add new units at the end of the list to eliminate need for refilling
+    the list all the time
+  - Make Ctrl-S to work from every window.
+  - Improve prformance. Remove call to getconfig() and brushes/colors creation from
+    CMapPane::DrawHex(). Instead create an array of brushes/colors at parse time and give every
+    land a variable to specify index in this array. Fill the array in CMapPane::ApplyColors().
+  - When checking whether to set 'Production' flag, check for 'BUILD' command as well.
+  - Add command to discard junk such as MINK.
+  - Load order template from a report.
+  - Remove --------- separators from history file.
+  - center map when running for the very first time
+  - do not display err messages when navigating old reports
+  - make a read-only text panes a little bit darker
+  - remove apply default to empty only options
+  - Change the way hex coordinates are displayed. Add hidable panes to display X and Y
+    coordinates (side and bottom).
+  - Collect and display skills descriptions.
+  - Write state data into ah.st instead of ah.cfg, so the latter will be much cleaner.
+  - Remove $Flag from history file, put it into config.
+  - colored flags, more then 1 flag per hex
+  - dont share more money then originally available!
+  - Split GIVE into two phases, give-give and give-accept. Check quantity during give-give.
+  - Some teaching automation. At least, count students and check ability to teach.
+  - Show all events which do not have units associated in a separate window.
+  - Change StructId to be actual structure id, since it is limited to a hex.
+  - check for month-long orders
+  - Jump to the turn when a hex was last visited - examine who have killed your unit ;)
+  - make reports for selected skills (mages) and save in comma-delimited
+    format to be used by table processors.
+  - Check if studying unit can study - have max No of days in config.
+  - Display 'saved' status in the window title.
+  - Output results of checking orders into unit locator window.
+  - Process GIVE ALL.
+  - Add a property for sorting units in the report's order.
+  - Display generic faction info (points, uncl. silv, attitudes).
+  - keep list of all unit/land properties encountered in the report (for the filtering)
+  - Store relative path for reports and order!
+2.2.0
+  - Load allies reports and make it possible to write orders for all loaded ally reports.
+  - GTK: unit locator dialog does not keep position history.
+  - Store data about a hex was *first* visited and add feature to export new hexes for the
+    current turn.
+  - SH1: Support turn/endturn (ignore all in between)
+  - SH1: Full sell/buy check (check amounts)
+  - DVT: Add some EOLs after faction info
+  - DVT: Implement functionality to give everything to specified unit.
+  - Use events to link shafts
+  - JT: The unit errors list. Just show in a separate window.
+  - coordinate information on the map panel title
+  - Parse object reports
+  - JT: The faction overview functions. Total amount of different crap.
+  - Display roads on the map... More detailed structures (ships, shafts).
+  - Add list of all commands to check for. Excludes typos.
+  - SH1: Count production/tax regions for the current turn (not static data from the report)
+    and display the list in a separate dialog. Give a warning if too many.
+  - Track known units. Have a list of known units and make filter to search for them.
+    Good to keep track of enemy mages!
+  - A way to save/load named filters for units.
+  - Make it that filter can have a name, so it can be picked from a combobox, not constructed
+    every time.
+  - Maintain a list of headers for unitlist pane. Provide combobox for fast select.
+2.2.1
+  - Fonts for "Errors and Messages" and that item/obects etc. viewer.
+2.2.3
+  - Change terrain type based on exit/event data!
+  - Redirect Python output to messages window!
+2.3.0
+  - Fix that 'unknown' property coming from the unit description having something like [XXX]
+  - If a font is not defined, try using some system font (wxNORMAL)
+    rather then using our built-ins.
+2.3.2
+  - Set starting foledr for the filedialog and set it differently for Load/Join/Save actions.
+    (Store last used folder)
+  - Add support for swimming, property value as comma-separated list.
+  - Truncated (long) exit description in Arcadia map, right side of the map
+  - Visual artifacts at the top of the map
+  - Remove all ParseCB* shit
+  - Export gates into a text file
+  - Provide a faction overview for selected area on the map
+  - Checkbox to show filtered units location on the map
+  - Draw rect on mouse move and export data using savehistory proc.
+  - Unit filter and month-long orders check would not return new units. Do something.
+  - Have rectangular area on the map selected. Apply it to filters, so a filter will return
+    only objects in the selected area (plus filter restrictions).
+  - JT: Cities list
+  - Add menu item to run orders explicitely.
+  - Add command to split unit proprtionally into N new units M men each. N*M can be
+    less than the original number of men - no problem. Provide an edit box for a command
+    to be given to each new unit.
+     ** Arcadia III
+  - Done: Parse land events and auto display at startup
+  - Done: New properties for the new skills notation
+  - Done: Teach checking
+  - Done: Map hex-edge regions
+  - Done: Objects in the edge regions
+  - Done: New lines for the SAIL orders. But the old ones could be quite good!
+  - Get flag properties
+  - Provide a property of all unit flags combined into string.
+    Support custom flags as well. Dialog to set/reset custom flags.
+  - Draw bad weather front line.
+
+2.4.2
+  - GIVEIF command for Nylandor
+
+2.4.3
+  - 's' flag for spoils
+  - It would help to have GIVEIF orders enabled on screen
+
+2.4.5
+  - Standar unit properties Armours and Weapons instead of Armament.
+  - Check skill and items required for production.
+  - Check skill levels for studying for all races.
+  - Warning if unit have horse, issues move order but can not ride. If no horse - can not move at all.
+
+2.4.6
+  - when you're exporting hex data, you really need an 'all hexes' option
+  - copy parent flags to new units
+  - Detect if there is a new resource in the region and report (like new skills?).
+  - Calculate sailing power (number of units isuued SAIL orders multiplied by ...) for MOBILE structures, just
+    like their load. Also check if a ship is overloaded.
+  - show arrow on the movement line
+  - For struct events (e.g. sailing) find a struct owner and assign event to him.
+  - In the tax/production report for the next turn show undertax/overtax (production) for each included hex.
+  - Check if there is a unit which could see if there is an advanced resource. If the
+    resource is not there, update the resource list with 0 value.
+  - Show in unit locator all units moving into a particular hex (rightclicked).
+  - Generate hex reports for buy/sell/produce, let select from actual properties like in
+    unit selector.
+
+
+- Check skills when giving men? Must be same days!
+- Variable amount of tax (50 or 40 or whatever)
+
+2.6.0
+- BUILD order uses up a trade point - take this into account when showing 'tax and trade info'
+- Battles in a region must be listed in chronological order
+- Provide battle forces statistics exactly like 'Faction overview'
+
+2.6.1
+- Number of workers in the hex financial report.
+- Batlle statistics can be turned off in the config file.
+- When showing production report, ignore products with 0 amount (such as MITH)
+- Hotkeys to switch between orders and unit list, goto next/prev unit while in orders pane.
+
+
+
+
+rejected:
+  - LandId is no good at all, especially in combination with NEW_UNIT_ID!
+    Implement totally new scheme for it!
+  - make odd columns in a unit list darker - not supported by wxw 2.2.7
+  - colored columns in unit list
+  - For orders like "move n n 123" check if struct 123 exists. - It may be there, just not
+    in the report
+  - Filter for showing selected faction on the map - not needed, functionality in
+    the unit filter allows this
+  - JT: User flags for units. Display multiple icons in a single columns. - not needed, easily
+    achived by using comments, can be searched by using Python, too.
+  - It would help to have GIVEIF and FOLLOW orders enabled on screen (so
+    GIVEIF produces same response as GIVE, and FOLLOW shows the movement path
+    the unit is going to follow if the target unit's movement route is known.
+    Eg I if I tell unit A to move N N N, that gets shown on the screen, and if
+    I tell unit B to follow unit A it would be nice to see the same path).
+    Displaying follow may well be more trouble than it's worth though.
+  - Not sure if this is already done, but to have ALH parse gate locations
+    sensed with the GATE DETECT cast command, which get reported back in the
+    events section (not very useful in Nylandor, but definitely in Grelth).
+  - Foundation magic skills are not recognised by default, though all others
+    are (PTTN, ALTE, MYST, WKEY, SUMM, ILLN)
+  - It would be nice for the 'check tax/trade for next turn' to be done per
+    faction rather than for all factions loaded. Currently it is pretty
+    useless if I have an allied report loaded. Also, it should not consider
+    the autotax flag to be sufficient to tax a hex if tax is listed in the
+    .cfg file as a monthlong order and the unit in question has a different
+    monthlong order.
+  - Simarly, it would be nice to be able to check "month long orders" for a
+    single faction; or even - since it already outputs in the unit locater
+    window - have "no month long orders" a selectable option in the unit
+    locater window so it can be combined with any other search criteria.
+  - Nylandor: All illuisionary creatures have a weight of 1 and rahter by coincidence I detected that their weight
+    wasn't included into the load of ships.
+  - Units are identified in lists by index - could that be causing unexplained gpfs? Change to by ID.
+  - Show all stolen events. - it is already in the security events
+  - show regiond where items were stolen and where entry was denied. - it is already in the security events
+
+
+
+
+

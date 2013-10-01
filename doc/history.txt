@@ -1,0 +1,327 @@
+2.6.4
+ - Move order for a unit unable to walk but able to fly would give error. 
+ - Find trade routes uses original amounts, so not affected by orders.
+ - Only captain has sail events listed.
+ - Added distance ring on the map.
+
+
+2.6.3
+ - Workaround for the problem with transient hexes.
+ - Binary for OS X provided by Loriaki.
+
+2.6.2
+ - The regions which were never seen can be manually assigned terrain type.
+ - Added support for wagons when calculating movement modes. 
+ - Added search for trade routes (Menu/Actions). You can double-click both source 
+   and dest lines in the report to select the hexes.
+ - Generic structures show up on the map on the same zoom level as gates and shafts.
+
+2.6.1
+ - Hotkeys to switch between orders and unit list, goto next/prev unit while 
+   in orders pane. Ctrl-O, Ctrl-U, Ctr-N and Ctrl-P respectively.
+ - Number of workers in the hex financial report.
+ - Batlle statistics can be turned off in the config file.
+ - Fixed a bug causing crash.
+ - Security events viewer.
+ - Show disappeared (since the last turn) units in the unit filter.
+
+2.6.0
+ - New improved graphics (old graphics can be used too).
+ - Financial forecast for the hex.
+ - Support for decimals in the wages.
+ - Improved new units handling.
+ - Building and buying trade items are considered trade.
+ - Battles in a region are listed in chronological order.
+
+2.5.2
+ - Can buy 'peasants' (as opposed to nomads, etc), thanks to Zorky.
+ - TAX_PER_TAXER config option specifies how much silv each taxer collects per turn.
+
+2.5.1
+ - Fixed Python filters on Windows.
+ - Fixed generation of TEACH orders for named new units.
+ - Handling '!' prefix.
+ - ;$GET works on new units too.
+ - fixed 'promote ;ne' thingy
+ - check tax/trade is now grouped per faction
+ - Faction overview shows aggregate properties, like 'men' or 'weapons'
+
+
+2.5.0
+ - Some bugfixes.
+ - New unit property 'leadership'.
+ - Check that only leaders/heroes can teach.
+ - Annoying warning about resorces required for production is
+   optional now. The check can be run from the menu for all units.
+ - 'All' option for exporting hexes
+ - New products are detected, accessible through Menu/View/New products.
+ - Check for ship sailing. It depends on new ship attributes in ah.cfg,
+   see readme.html.
+ - Assigning sail events to captains.
+ - Show under/over tax/production in the report.
+ - Missing advanced resources in the hexes are shown as having 0 amount.
+ - Find units moving into the current hex.
+ - List of provinces.
+ - Hex locator.
+ - NAME UNIT order processed.
+ - WITHDRAW order processed
+ - $get pseudocomment added, pseudocomments explained in readme.html
+ - ne pseudocomment deprecated, use $ne instead
+ - added common include file for Python filters, see readme.html for details
+ - Implemented SEND command. However, it does not know what the movement
+   price of the target land is, so price depends just on the weather.
+   Classes of goodies are not supported as well.
+
+
+2.4.5
+ - Many default values for configuration (such as 'men' unit property)
+   are generated from the Atlantis sources.
+ - Check skill and items required for production - new config sections
+   to support this.
+ - Adjust skill levels when giving/buying men - better teaching checks.
+ - Checking max skill levels for studying for all races, not just leaders.
+ - Check if overloading prevents moving modes.
+ - Compiles with both wxWindows 2.4.2 and 2.6.1.
+
+2.4.4
+ - Fixed crash when creating a new unit, modifying orders and
+   clicking the new unit on win98.
+
+2.4.3.
+ - Fixed crash when joining reports.
+ - Fixed crash when issuing orders to multiple users.
+ - Generic processing of SPOILS flag added.
+ - Lakes behave like oceans for Arcadia sailing rules.
+ - Fixed bug with markets having just one item wanted/for sale.
+
+
+2.4.2
+ - GIVEIF command added.
+ - Fixed bug with commands affecting unit flags.
+
+
+2.4.1
+ - A bug found and fixed right after 2.4.0 release.
+
+2.4.0
+ - Unit flags are parsed and available as a new property.
+ - Support for GUARD, AVOID, BEHIND, REVEAL, HOLD, NOAID, CONSUME.
+   NOCROSS, TAX, AUTOTAX commands.
+ - Keeping track of the folders used in the file dialogs
+   (load/join reports, save/load orders).
+ - Multiple selection of units - rightclick for command.
+ - Ability to swim is shown in units' 'movement' property.
+ - Eye candy - terrain bitmaps (see readme.html).
+ - List of cities.
+ - Faction overview can be provided for selected area on the map.
+ - Unit locator can use selected hexes and mark located units
+   on the map.
+ - Unit locator and 'Check month-long orders' include new units.
+ - New command in the unitlist right-click menu - 'Split'.
+ - Tropic region borders are shown on the map.
+ - Support for Arcadia III features.
+ - Custom unit flags and global editing of land and custom unit flags.
+ - Minor improvements and bugfixes.
+
+
+2.3.1
+ - Fixed a bug related to handling changing terrain types.
+
+2.3.0
+ - Unit filters can be written in Python. It gives more power and
+   does not require any Python or programming skills.
+ - ALH now comes with configure script!
+ - Fixed problem with '.' in the city names.
+ - Special characters in unit descriptions should now cause less problems.
+ - Changed the way default font is generated.
+ - Some bugs fixed.
+
+2.2.3
+ - Support change of terrain type for hexes.
+ - Single window layout.
+
+2.2.2
+ - Fixed problem with lost orders when clicking on another unit.
+ - Terrain names with spaces are supported.
+ - GIVE ALL EXCEPT construct supported - thanks to Sh'Arcashmo.
+ - TEACH and PROMOTE orders support FACTION X NEW Y construct.
+ - 'Give everything' dialog supports NEW X and FACTION X NEW Y.
+ - New unit properties - description and combat spell.
+ - wx-config has been recently renamed for GTK, so you may need
+   to create a symbolic link to be able to compile - something like
+   ln -s wxgtk-2.4-config wx-config
+
+2.2.1
+ - Some bugfixes and one more configurable font.
+
+2.2.0
+ - Ally reports can be joined (use File/Join Report menu option after
+   Loading your report) to view the best hexes and units descriptions.
+   After a faction's report was joined, its units can be given orders.
+   Map fragments can be joined as well.
+ - Added functionality to export map data.
+ - Added functionality to keep track of special units. Add unit to a
+   tracking group by rightclicking on it, load groups int the unit filter.
+ - Added support for TURN/ENDTURN, ATTACK, ASSASSINATE, STEAL orders.
+ - SELL/BUY orders will also check wanted/available amount.
+ - Added list of valid orders. Excludes typos.
+ - Shafts are linked automatically.
+ - Added map icons for shafts, ships and roads.
+ - Object reports are parsed.
+ - Added a dialog to change column sets in the unit lists.
+ - Added a way to save/load named filters for units.
+ - Show all errors instead of non-unit errors.
+ - Added tax/trade forecast for the next turn.
+ - Added factions overview.
+ - Default font size increased.
+ - "GIVE ALL" bug fixed.
+ - works with WXW 2.4.0 .
+ - Config files were modified. They will be upgraded automatically,
+   but keep the copy, just in case.
+ - Readme is in HTML format now.
+ - Some other small bugfixes and improvements.
+
+2.1.5
+ - Some bugs fixed.
+ - Added check for for max number of days of studying. The check is done
+   against a single value, so it is useful only for leaders.
+ - Units with colon (:) in the name were skipped. Fixed.
+ - Month-long order checking output goes into the filtered units window
+   by default. Setting config variable [COMMON].CHECK_OUTPUT_LIST to 0
+   will produce output the old way.
+ - BUY ALL, SELL ALL, GIVE ALL commands are supported, but only for items,
+   not for item classes.
+ - A new unit property 'sequence' is added. Use it for sorting units in the
+   report's order.
+ - Faction info viewer added.
+
+2.1.4
+ - Item reports are parsed.
+ - Assassinations are parsed.
+ - Gate list viewer added.
+ - Battle and such viewers will select the land involved.
+ - A few bugs fixed, including compile error on some versions of gcc.
+
+2.1.3
+ - Some bugs fixed.
+ - Configuration file split into two files, second file containing
+   private game data.
+ - Number of flags per hex increased, Flag texts storage location
+   changed. Flag width is read from config file.
+ - Skill viewer added.
+ - Battle viewer added for all battles and battles in one hex.
+ - Added viewer for events not related to units.
+ - Added menu option for checking month long orders.
+ - Added menu option for exporting mages data in csv format
+   (to be used in a spreadsheet processor).
+ - Added two buttons for report navigation - goto last turn and
+   goto the turn when selected hex was last visited.
+
+2.1.2
+ - Orders processing is relaxed - only warnings are generated, so
+   the execution of other orders is not affected.
+ - Special comment ';ne' is introduced. The purpose of it is to
+   suppress warnings produced by order processor.
+ - Added a menu option to quit and discard changes.
+ - Changed default unit list columns a little bit.
+ - Unit Locator pops up a filter dialog when opened.
+
+2.1.1
+ - Bugfix: can teach units of other factions, no skill check.
+ - Skill check for teaching can be turned off, usefull if student
+   is buying some men.
+
+2.1.0
+ - Ship load is displayed in the hex description pane, next to a
+   ship.
+ - TEACH orders are checked and autogenerated.
+ - New property 'teaching' is added. It shows how many students per
+   teacher this unit is teaching (rounded up), or how many days of
+   teaching the unit receives (rounded down).
+ - Weight and movement modes of units are calculated. New properties
+   'weight' and 'movement' are added to display that.
+
+   To display teaching and movement, add to the [UNIT_LIST_HDR]
+   section of the ah.cfg file the following lines, replacing '019'
+   and '020' with your desired sequences:
+
+   019 = 39, 0, movement, Move
+   020 = 43, 1, teaching, Teach
+
+ - Improved giving items - warning is generated if unit is trying
+   to give too much, sharing is not giving too much silv.
+ - Advanced resources are shown in a hex description even after
+   the unit able to see has left.
+ - Doubleclick in the Errors window selects unit.
+
+
+2.0.0
+ - Atlantis Little Helper is an open source project now.
+ - User interface rewritten using wxWindows toolkit
+   (http://www.wxwindows.org/), thus making it cross-platform.
+ - Hex X and Y coordinates must be in the range [-2048 .. 2047],
+   maximum number of planes is 256. Just to be announced.
+ - New windows layout added, switching to the old one is possible.
+ - Unit locator window added.
+ - Orders are loaded from a report's order template.
+ - Menu item for impoting Crystall Ball data has been removed.
+   If two versions of CB can not import each others data  anymore,
+   how do you expect us to do it?
+ - Newly formed units are appended at the end of unit list with no
+   regard to the current sort order - looks better on wxw.
+ - Some other minor interface changes due to the switch to the wxw
+   toolkit.
+ - Order errors are not shown when switching reports.
+ - Planes are ordered in the sequence they appear in reports
+   historically.
+ - Improved support for items/skills aliases
+ - Map coordinates look better.
+
+1.1.6
+ - Fixed bug with city name not displayed because the region was
+   mentioned in the events section.
+ - Pillaging and building activities are shown on the map like taxing
+   and
+   producing. Buying and selling trade items are still not shown.
+
+1.1.5
+ - Town is not shown if unit passes it and stops in the next hex,
+   fixed.
+ - Enter an order creating a new unit, select the new unit, click
+   menu/actions/apply default orders, get GPF. Fixed.
+ - Unit popup menu option to discard junk items.
+
+
+1.1.4
+ - Size of bullets representing men on the map depends on their
+   number.
+ - Fixed bug causing gpf when unit was only mentioned in events
+   section.
+
+1.1.3
+ - '[' character in unit/faction name is supported.
+
+1.1.2
+ - GIVE FACTION X NEW Y is supported.
+
+1.1.1
+ - Farsight bug fixed.
+
+1.1.0
+
+ - LEAVE, ENTER, PROMOTE orders are processed.
+ - Imoprt from Crystall Ball data.
+ - Tracks for MOVE, SAIL, ADVANCE orders are displayed.
+ - Navigating reports caused loss of new land flags - fixed.
+ - Hex sizes are read from config file, section [COMMON], entry
+   HEX_SIZE_LIST. It is comma separated list.
+ - Walls are displayed on the map.
+ - History file format has been extended to store exits information.
+   It should be both forward and backward compatible, but it is
+   better to make a copy of ah.his file, just in case.
+ - A number of minor bugs fixed.
+
+
+1.0.0
+
+ - Initial release.

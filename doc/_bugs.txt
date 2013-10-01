@@ -1,0 +1,151 @@
+
+
+New:
+====
+
+ - If unit is selected and has move order, click on shift to lower plain.
+   Hexes unit is moving through (upper plain) will be displayed in the
+   lower plain. Erasing the track, obviously.
+ - There is a minor bug with calculating red bullet size (on the map) when
+   joining just map (not a full report).
+ - Ctrl-N does not refresh unit description if done from orders and orders 
+   were changed! Guess linux only.
+ - If units are sorted, say, by description, and you change decription 
+   of a unit, resorting happens but associated data in the underlying list
+   is not updated. Assertion happens in 
+    CUnit * CUnitPane::GetUnit(long index)
+
+
+Fixed:
+======
+
+ - only half of grid is visible in win95
+ - do not wrap orders - they are sent wrapped!
+ - do not save ships in the history
+ - gate (and liar ?) info in history is lost after a turn
+   after last seen. Gates read from history are not saved.
+ - When parsing SILV if amount and name are on different
+   lines, not parsed.
+ - 'load orders' after autoloaded does not work
+ - no city - gate goes red on the map when selected.
+ - draw movement, cross the world border
+ - draw movement, rclick across border
+ - change report, set flag - gone!
+ - implement hex sizes from config
+ - new unit must be inside a structure if owner is inside a struct!
+ - walls underworld
+ - Transform history file. Count Exits, if 1 or 0 - set to 0xFF.
+ - Terrain name may contain EOL character.
+ - Parse city type.
+ - draw cities on wide map (displayed twice)
+ - default colors for underworld land types
+ - Only one default order string is stored/applied, others are lost.
+ - Orders panes uses wrong font sometimes. If somebody else unit is active on
+   startup, uses font for descriptions?
+ - In 2.0 try setting both primary and secondary sort order on the same column,
+   then setting primary on another. The secondary is gone.
+ - Set flag, it is not shown at once.
+ - when sharing money check for original amount, money received from
+   SELL or GIVE must not be shared.
+ - Can not set flag on unconfirmed region!
+ - Map shows resources from history only! New numbers are ignored!
+ - Can not remove map flag.
+ - if struct owner enters another struct, he is still an owner
+ - Units with ':' in the name are ignored!
+ - GIVE ALL does not process the target correct if it is issued by more then one
+   unit. A single var is used which is not correct, need a temp property for every
+   order.
+ - GTK: rightclick on the bottom-most unit produces menu going off-screen.
+ - when giving men and calculating acceptors resulting skill, Arcadia style
+   experience is discarded.
+
+ 2.2.1:
+ - autotax 0 does not remove region from the taxing forecast
+ - Scaling (change zoom) is not quite correct.
+ - Lost shaft linkage.
+ - Resizable dialogs under win32 does not have a title bar.
+ - Problems setting colors for non-standard terrain types.
+ - Problem checking month-long orders with turn/endturn
+ - In the exported hex the product line after wrapping may have 3 leading
+   spaces. Should be 2.
+ - when giving unit to a faction it should not count to tax/prod
+   forecast
+ - sequence is not in the properties list in the col set dialog
+ - New units does not have 'faction name' property.
+ - After changing column set for a unit list sort marks are lost
+
+2.2.2:
+ - weight is not in the property list.
+
+2.3.0
+ - filtering by XXX=0 did not include units with missing XXX property.
+ - In the single window layout column width in the unit list is not saved.
+ - In the single window layout comments are not saved unless orders were modified
+   when clicking on another unit.
+ - Dot in the city name.
+ - In starting cities it thinks amount available 'unlimited' means amount available '0'.
+
+2.4.3
+ - The ALH sailing rules seem to consider lakes to be a type of land
+    terrain, whereas they actually behave like oceans
+ - Did not process markets with 1 item correctly
+
+2.4.5
+ - No fonts in ah.cfg, open Options dialog, click Cancel, observe Chinese
+   fonts on the map.
+
+2.4.6
+ - Bad skill check for Arcadia III type games.
+ - Performs construction on Ship [115]. Is not recognized as producing.
+ - New Events: section in Xanaxino and such gets messed up in ah.his - it
+   comes before products. As result, advanced resources from ah.his are lost.
+   See turns 0209, 0210 in Xanaxino, hex 6,12.
+
+2.5.1
+ - unlimited sale items not recognized
+
+2.6.1
+- Save orders dialog with wxw 2.6.1 does not select orders folder!
+- Right-click unexplored hex, pick 'Find units moving here' - crash!  
+
+2.6.4
+ - If unit has wings, gliders, other stuff, Movement column shows 'fly', but 
+   when move order is executed, it gives error - somehow gliders do not count?
+   That was because unit could not walk but could fly. 
+ - Find trade routes uses current good amounts, should be original
+ - Only captain should have sail events listed  
+
+
+Can't reproduce:
+================
+
+ - after 'save as' config file is misaligned
+ - Press 'Ctrl-S' in the order edit window. The very last changes in this
+   window are not saved.
+ - I have noticed one problem: when I enter new orders for a unit, I
+have to click back on that unit's line in the "Units (hex)"
+window in order for the orders to get updated--otherwise, the
+new orders get lost. Previous versions, I could click on any
+other unit and the orders would get stored.
+ - Command affecting flags (like guard) when issued by FORMed unit, are
+   applied to the mother unit
+ - sort unit list by struct_id, give order enter NN, click on unit -
+   assert in CUnitPane::GetUnit
+ - If the hex is located by the window border, unit tracks are not drawn!
+ - Run unit locator which returns your units including some new units.
+   Select some units in the locator list and issue an order - new units disappear,
+   the order is lost. Issue another order - crash!  
+
+
+
+
+Rejected:
+=========
+
+ - If 'Units in all hexes' option is selected in unit list and you click
+   on the previous turn, selection is not changed. - It is version 1.0 specific.
+
+
+
+
+
