@@ -103,36 +103,36 @@ COptionsDialog::COptionsDialog(wxWindow * parent)
     m_pComboColors              = new wxComboBox(this, ID_D1_CB_COLOR);
     m_pComboFactions            = new wxComboBox(this, ID_D1_CB_FACTION);
 
-    m_pChkLoadOrd               = new wxCheckBox(this, ID_D1_CHK_LOAD_ORD         , "Load Orders");
-    m_pChkLoadRep               = new wxCheckBox(this, ID_D1_CHK_LOAD_REP         , "Load Report");
-    m_pChkUnixStyle             = new wxCheckBox(this, ID_D1_CHK_UNIX_FILES       , "Unix file format");
-    m_pChkHatchUnvisited        = new wxCheckBox(this, ID_D1_CHK_HATCH_UNVISITED  , "Hatch unvisited");
-    m_pChkRClickCenters         = new wxCheckBox(this, ID_D1_CHK_RIGHT_CLCK_CENTER, "Right Click Centers");
-//    m_pChk3WinLayout            = new wxCheckBox(this, ID_D1_CHK_3WIN_LAYOUT      , "3 windows layout");
-    m_pChkTeach                 = new wxCheckBox(this, ID_D1_CHK_TEACH_LVL        , "Check TEACH level");
-    m_pChkReadPwd               = new wxCheckBox(this, ID_D1_CHK_READ_PWD         , "Import Passwords");
-    m_pChkCheckProdReq          = new wxCheckBox(this, ID_D1_CHK_CHK_PROD_REQ     , "Immediate production check");
-    m_pChkMoveMode              = new wxCheckBox(this, ID_D1_CHK_CHK_MOVE_MODE    , "Check movement modes");
+    m_pChkLoadOrd               = new wxCheckBox(this, ID_D1_CHK_LOAD_ORD         , wxT("Load Orders"));
+    m_pChkLoadRep               = new wxCheckBox(this, ID_D1_CHK_LOAD_REP         , wxT("Load Report"));
+    m_pChkUnixStyle             = new wxCheckBox(this, ID_D1_CHK_UNIX_FILES       , wxT("Unix file format"));
+    m_pChkHatchUnvisited        = new wxCheckBox(this, ID_D1_CHK_HATCH_UNVISITED  , wxT("Hatch unvisited"));
+    m_pChkRClickCenters         = new wxCheckBox(this, ID_D1_CHK_RIGHT_CLCK_CENTER, wxT("Right Click Centers"));
+//    m_pChk3WinLayout            = new wxCheckBox(this, ID_D1_CHK_3WIN_LAYOUT      , wxT("3 windows layout"));
+    m_pChkTeach                 = new wxCheckBox(this, ID_D1_CHK_TEACH_LVL        , wxT("Check TEACH level"));
+    m_pChkReadPwd               = new wxCheckBox(this, ID_D1_CHK_READ_PWD         , wxT("Import Passwords"));
+    m_pChkCheckProdReq          = new wxCheckBox(this, ID_D1_CHK_CHK_PROD_REQ     , wxT("Immediate production check"));
+    m_pChkMoveMode              = new wxCheckBox(this, ID_D1_CHK_CHK_MOVE_MODE    , wxT("Check movement modes"));
 
     m_pTxtPassword              = new wxTextCtrl(this, ID_D1_TXT_PASSWORD);
 
-    m_pRadio1Win                = new wxRadioButton(this, ID_D1_RADIO_1_WIN, "1 window", wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
-    m_pRadio2Win                = new wxRadioButton(this, ID_D1_RADIO_2_WIN, "2 windows");
-    m_pRadio3Win                = new wxRadioButton(this, ID_D1_RADIO_3_WIN, "3 windows");
+    m_pRadio1Win                = new wxRadioButton(this, ID_D1_RADIO_1_WIN, wxT("1 window"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+    m_pRadio2Win                = new wxRadioButton(this, ID_D1_RADIO_2_WIN, wxT("2 windows"));
+    m_pRadio3Win                = new wxRadioButton(this, ID_D1_RADIO_3_WIN, wxT("3 windows"));
 
-    m_pRadioIconsSimple         = new wxRadioButton(this, ID_D1_RADIO_ICONS_SIMPLE  , "Simple", wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
-    m_pRadioIconsAdvanced       = new wxRadioButton(this, ID_D1_RADIO_ICONS_ADVANCED, "Advanced");
+    m_pRadioIconsSimple         = new wxRadioButton(this, ID_D1_RADIO_ICONS_SIMPLE  , wxT("Simple"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+    m_pRadioIconsAdvanced       = new wxRadioButton(this, ID_D1_RADIO_ICONS_ADVANCED, wxT("Advanced"));
 
 
-    btnFont                     = new wxButton     (this, ID_D1_BTN_FONT     , "Font" );
-    btnColor                    = new wxButton     (this, ID_D1_BTN_COLOR    , "Color" );
-    btnOk                       = new wxButton     (this, wxID_OK            , "Ok"    );
-    btnCancel                   = new wxButton     (this, wxID_CANCEL        , "Cancel" );
+    btnFont                     = new wxButton     (this, ID_D1_BTN_FONT     , wxT("Font") );
+    btnColor                    = new wxButton     (this, ID_D1_BTN_COLOR    , wxT("Color") );
+    btnOk                       = new wxButton     (this, wxID_OK            , wxT("Ok")    );
+    btnCancel                   = new wxButton     (this, wxID_CANCEL        , wxT("Cancel") );
 
-    stPwd                       = new wxStaticText (this, -1                 , "Password");
-    stFaction                   = new wxStaticText (this, -1                 , "Faction");
-    stLayout                    = new wxStaticText (this, -1                 , "Layout");
-    stIcons                     = new wxStaticText (this, -1                 , "Icons");
+    stPwd                       = new wxStaticText (this, -1                 , wxT("Password"));
+    stFaction                   = new wxStaticText (this, -1                 , wxT("Faction"));
+    stLayout                    = new wxStaticText (this, -1                 , wxT("Layout"));
+    stIcons                     = new wxStaticText (this, -1                 , wxT("Icons"));
 
 
 #define space 2
@@ -240,7 +240,7 @@ void COptionsDialog::Init()
         m_FontData[i].encoding = gpApp->m_Fonts[i]->GetEncoding() ;
         m_FontData[i].face     = gpApp->m_Fonts[i]->GetFaceName() ;
 
-        m_pComboFonts->Append(gpApp->m_FontDescr[i], (void*)i);
+        m_pComboFonts->Append(wxString::FromAscii(gpApp->m_FontDescr[i]), (void*)i);
 //        m_pComboFonts->Append(gpApp->m_FontDescr[i]);
 //        m_pComboFonts->SetClientData(m_pComboFonts->GetCount()-1, (void*)i);
     }
@@ -248,7 +248,7 @@ void COptionsDialog::Init()
     i = gpApp->GetSectionFirst(SZ_SECT_COLORS, szName, szValue);
     while (i>=0)
     {
-        m_pComboColors->Append(szName);
+        m_pComboColors->Append(wxString::FromAscii(szName));
         pSS = new CStrStr(szName, szValue);
         m_ColorData.Insert(pSS);
         i = gpApp->GetSectionNext(i, SZ_SECT_COLORS, szName, szValue);
@@ -257,7 +257,7 @@ void COptionsDialog::Init()
     i = gpApp->GetSectionFirst(SZ_SECT_PASSWORDS, szName, szValue);
     while (i>=0)
     {
-        m_pComboFactions->Append(szName);
+        m_pComboFactions->Append(wxString::FromAscii(szName));
         pSS = new CStrStr(szName, szValue);
         m_FactionData.Insert(pSS);
         i = gpApp->GetSectionNext(i, SZ_SECT_PASSWORDS, szName, szValue);
@@ -329,8 +329,8 @@ void COptionsDialog::OnOk    (wxCommandEvent& event)
 
 //        if (m_pChk3WinLayout->GetValue() != (0!=atol(gpApp->GetConfig(SZ_SECT_COMMON, SZ_KEY_LAYOUT))))
         if (layout != atol(gpApp->GetConfig(SZ_SECT_COMMON, SZ_KEY_LAYOUT)))
-            wxMessageBox("Please restart application for the changes to take effect",
-                         "Warning", wxOK | wxCENTRE | wxICON_EXCLAMATION);
+            wxMessageBox(wxT("Please restart application for the changes to take effect"),
+                         wxT("Warning"), wxOK | wxCENTRE | wxICON_EXCLAMATION);
 
 
         gpApp->SetConfig(SZ_SECT_COMMON, SZ_KEY_LOAD_ORDER        , m_pChkLoadOrd          ->GetValue()?"1":"0");
@@ -441,7 +441,7 @@ void COptionsDialog::OnFont    (wxCommandEvent& event)
     data.EnableEffects(false);
 
     wxFontDialog *dialog = new wxFontDialog(this, data);
-    wxString      title  = gpApp->m_FontDescr[fontidx];
+    wxString      title  = wxString::FromAscii(gpApp->m_FontDescr[fontidx]);
     dialog->SetTitle(title);
     if (dialog->ShowModal() == wxID_OK)
     {
@@ -479,7 +479,7 @@ void COptionsDialog::OnColor    (wxCommandEvent& event)
         return;
 
     colname = m_pComboColors->GetStringSelection();
-    StrToColor(&colour, gpApp->GetConfig(SZ_SECT_COLORS, colname));
+    StrToColor(&colour, gpApp->GetConfig(SZ_SECT_COLORS, colname.mb_str()));
 
     data.SetChooseFull(TRUE);
     data.SetCustomColour(0,colour);
@@ -493,7 +493,7 @@ void COptionsDialog::OnColor    (wxCommandEvent& event)
         wxColour col = retData.GetColour();
 
         ColorToStr(newcolour, &col);
-        gpApp->SetConfig(SZ_SECT_COLORS, colname, newcolour);
+        gpApp->SetConfig(SZ_SECT_COLORS, colname.mb_str(), newcolour);
         gpApp->ApplyColors();
     }
     dialog->Destroy();
@@ -503,20 +503,14 @@ void COptionsDialog::OnColor    (wxCommandEvent& event)
 
 void COptionsDialog::OnFaction(wxCommandEvent& event)
 {
-    wxString faction;
-
-    faction = m_pComboFactions->GetStringSelection();
-    m_pTxtPassword->SetValue( gpApp->GetConfig(SZ_SECT_PASSWORDS, faction));
+    m_pTxtPassword->SetValue( wxString::FromAscii(gpApp->GetConfig(SZ_SECT_PASSWORDS, m_pComboFactions->GetStringSelection().mb_str())));
 }
 
 //--------------------------------------------------------------------------
 
 void COptionsDialog::OnPassword(wxCommandEvent& event)
 {
-    wxString faction;
-
-    faction = m_pComboFactions->GetStringSelection();
-    gpApp->SetConfig(SZ_SECT_PASSWORDS, faction, m_pTxtPassword->GetValue());
+    gpApp->SetConfig(SZ_SECT_PASSWORDS, m_pComboFactions->GetStringSelection().mb_str(), m_pTxtPassword->GetValue().mb_str());
 }
 
 //--------------------------------------------------------------------------

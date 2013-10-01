@@ -59,7 +59,7 @@ END_EVENT_TABLE()
 //--------------------------------------------------------------------
 
 CEditorForPane::CEditorForPane(CEditPane * parent)
-               :wxTextCtrl(parent, -1, "", wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_AUTO_SCROLL )
+               :wxTextCtrl(parent, -1, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_AUTO_SCROLL )
 {
     m_pParent = parent;
 }
@@ -96,7 +96,7 @@ CEditPane::CEditPane(wxWindow* parent, const char * header, BOOL editable, int W
     m_pSource       = NULL;   
     m_pChanged      = NULL; 
                    
-    m_pHeader       = (header && *header)?(new wxStaticText(this, -1, header, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE | wxST_NO_AUTORESIZE )):NULL;
+    m_pHeader       = (header && *header)?(new wxStaticText(this, -1, wxString::FromAscii(header), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE | wxST_NO_AUTORESIZE )):NULL;
     m_HdrHeight     = 0;
     m_WhichFont     = WhichFont;
     m_pEditor       = new CEditorForPane(this);
@@ -127,7 +127,7 @@ void CEditPane::SetSource(CStr * pSource, BOOL * pChanged)
 {
     m_pSource   = pSource; 
     m_pChanged  = pChanged;
-    m_pEditor->SetValue(pSource?pSource->GetData():"");
+    m_pEditor->SetValue(pSource?wxString::FromAscii(pSource->GetData()):wxT(""));
 }
 
 //--------------------------------------------------------------------
@@ -143,7 +143,7 @@ BOOL CEditPane::SaveModifications()
     if (m_pEditor->IsModified())
     {
         if (m_pSource)
-            m_pSource->SetStr(m_pEditor->GetValue());
+            m_pSource->SetStr(m_pEditor->GetValue().mb_str());
         if (m_pChanged)
             *m_pChanged = TRUE;
         m_pEditor->DiscardEdits();
@@ -161,7 +161,7 @@ BOOL CEditPane::SaveModifications()
 
 void CEditPane::GetValue(CStr & value)
 {
-    value.SetStr(m_pEditor->GetValue());
+    value.SetStr(m_pEditor->GetValue().mb_str());
 }
 
 //--------------------------------------------------------------------
@@ -175,7 +175,7 @@ void CEditPane::ApplyFonts()
         wxCoord           w, h, descent, ext;
 
         m_pHeader->SetFont(*gpApp->m_Fonts[FONT_EDIT_HDR]);
-        m_pHeader->GetTextExtent("A", &w, &h, &descent, &ext);
+        m_pHeader->GetTextExtent(wxT("A"), &w, &h, &descent, &ext);
 
         m_HdrHeight = h+2;
     }

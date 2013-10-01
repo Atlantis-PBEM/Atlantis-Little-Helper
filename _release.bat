@@ -1,5 +1,5 @@
-set zipfile=ReleaseFiles\ah_2.6.4.zip
-set zipfile2=ReleaseFiles\ah_2.6.4.no_python.zip
+set zipfile=ReleaseFiles\ah_2.6.5b.zip
+set zipfile2=ReleaseFiles\ah_2.6.5b.no_python.zip
 
 mkdir ReleaseFiles
 rm %zipfile%

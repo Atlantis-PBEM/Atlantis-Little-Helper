@@ -90,7 +90,7 @@ CUnitFlagsDlg::CUnitFlagsDlg(wxWindow *parent, E_FLAG_EDIT_MODE Mode, unsigned i
 
     // Unit flags
 
-    st = new wxStaticText(this, -1, "Unit Flags");
+    st = new wxStaticText(this, -1, wxT("Unit Flags"));
     topsizer->Add(st         , 0, wxALIGN_CENTER | wxALL , SPACER_GENERIC);
 
     x = 1;
@@ -103,15 +103,15 @@ CUnitFlagsDlg::CUnitFlagsDlg(wxWindow *parent, E_FLAG_EDIT_MODE Mode, unsigned i
         sizer    = new wxBoxSizer( wxHORIZONTAL );
         if (eThisUnit == m_EditMode || eAll == m_EditMode || eManyUnits == m_EditMode)
         {
-            m_chbUnitFlags[i]     = new wxCheckBox   (this, -1, "");
+            m_chbUnitFlags[i]     = new wxCheckBox   (this, -1, wxT(""));
             if (m_UnitFlags & x)
                 m_chbUnitFlags[i]->SetValue(TRUE);
             sizer->Add(m_chbUnitFlags[i] , 0, wxALIGN_CENTER | wxLEFT | wxRIGHT , SPACER_GENERIC);
         }
         sKey.Empty();
         sKey << (long)(i+1) << ". ";
-        st = new wxStaticText(this, -1, sKey.GetData());
-        m_txtUnitFlagText[i]  = new wxTextCtrl(this, -1, p ); //, wxDefaultPosition, wxDefaultSize); //wxSize(100,30));
+        st = new wxStaticText(this, -1, wxString::FromAscii(sKey.GetData()));
+        m_txtUnitFlagText[i]  = new wxTextCtrl(this, -1, wxString::FromAscii(p) ); //, wxDefaultPosition, wxDefaultSize); //wxSize(100,30));
         m_txtUnitFlagText[i]->SetEditable(eNames == m_EditMode);
 
         sizer->Add(st                   , 0, wxALIGN_CENTER | wxLEFT | wxRIGHT , SPACER_GENERIC);
@@ -124,8 +124,8 @@ CUnitFlagsDlg::CUnitFlagsDlg(wxWindow *parent, E_FLAG_EDIT_MODE Mode, unsigned i
 
     if (eAll == m_EditMode || eManyUnits == m_EditMode)
     {
-        m_btnSetAllUnit = new wxButton     (this, ID_BTN_SET_ALL_UNIT , "Set for all units"    ); 
-        m_btnRmvAllUnit = new wxButton     (this, ID_BTN_RMV_ALL_UNIT , "Clear for all units"    );
+        m_btnSetAllUnit = new wxButton     (this, ID_BTN_SET_ALL_UNIT , wxT("Set for all units"    )); 
+        m_btnRmvAllUnit = new wxButton     (this, ID_BTN_RMV_ALL_UNIT , wxT("Clear for all units"    ));
         sizer    = new wxBoxSizer( wxHORIZONTAL );
             sizer->Add(m_btnSetAllUnit , 0, wxALIGN_CENTER | wxALL, SPACER_GENERIC );
             sizer->Add(m_btnRmvAllUnit , 0, wxALIGN_CENTER | wxALL, SPACER_GENERIC);
@@ -136,20 +136,20 @@ CUnitFlagsDlg::CUnitFlagsDlg(wxWindow *parent, E_FLAG_EDIT_MODE Mode, unsigned i
 
     if (eAll == m_EditMode)
     {
-        st = new wxStaticText(this, -1, "Land Flags");
+        st = new wxStaticText(this, -1, wxT("Land Flags"));
         topsizer->Add(st         , 0, wxALIGN_CENTER | wxALL , SPACER_GENERIC);
 
         for (i=0; i<LAND_FLAG_COUNT; i++)
         {
-            m_chbLandFlags[i] = new wxCheckBox   (this, -1, LandFlagLabel[i]);
+            m_chbLandFlags[i] = new wxCheckBox   (this, -1, wxString::FromAscii(LandFlagLabel[i]));
 
             sizer    = new wxBoxSizer( wxHORIZONTAL );
                 sizer->Add(m_chbLandFlags[i]   , 0, wxALIGN_LEFT  | wxLEFT | wxRIGHT , SPACER_GENERIC );
             topsizer->Add(sizer        , 1, wxALIGN_CENTER | wxALL | wxGROW, 2 );
         }
 
-        m_btnSetAllLand = new wxButton     (this, ID_BTN_SET_ALL_LAND , "Set for all hexes"    ); 
-        m_btnRmvAllLand = new wxButton     (this, ID_BTN_RMV_ALL_LAND , "Clear for all hexes"    );
+        m_btnSetAllLand = new wxButton     (this, ID_BTN_SET_ALL_LAND , wxT("Set for all hexes")    ); 
+        m_btnRmvAllLand = new wxButton     (this, ID_BTN_RMV_ALL_LAND , wxT("Clear for all hexes")    );
         sizer    = new wxBoxSizer( wxHORIZONTAL );
             sizer->Add(m_btnSetAllLand , 0, wxALIGN_CENTER | wxALL, SPACER_GENERIC );
             sizer->Add(m_btnRmvAllLand , 0, wxALIGN_CENTER | wxALL, SPACER_GENERIC);
@@ -157,9 +157,9 @@ CUnitFlagsDlg::CUnitFlagsDlg(wxWindow *parent, E_FLAG_EDIT_MODE Mode, unsigned i
     }
 
 
-    m_btnCancel     = new wxButton     (this, wxID_CANCEL , "Cancel" );
+    m_btnCancel     = new wxButton     (this, wxID_CANCEL , wxT("Cancel") );
     if (eNames == m_EditMode || eThisUnit == m_EditMode)
-        m_btnOk     = new wxButton     (this, wxID_OK     , "Set"    );
+        m_btnOk     = new wxButton     (this, wxID_OK     , wxT("Set")    );
 
     sizer    = new wxBoxSizer( wxHORIZONTAL );
         if (m_btnOk)
@@ -200,7 +200,7 @@ void CUnitFlagsDlg::OnOk(wxCommandEvent& event)
         {
             sKey.Empty();
             sKey << (long)i;
-            gpApp->SetConfig(SZ_SECT_UNIT_FLAG_NAMES, sKey.GetData(), m_txtUnitFlagText[i]->GetValue());
+            gpApp->SetConfig(SZ_SECT_UNIT_FLAG_NAMES, sKey.GetData(), m_txtUnitFlagText[i]->GetValue().mb_str());
         }
         CUnit::ResetCustomFlagNames();
     }
@@ -267,7 +267,7 @@ END_EVENT_TABLE()
 
 
 CMapFlagDlg::CMapFlagDlg(wxWindow *parent, CLand * pLand, wxPoint & position) 
-            :wxDialog( parent, -1, "Hex flags", position) //, wxDefaultSize, wxDIALOG_MODAL | wxRESIZE_BORDER )
+            :wxDialog( parent, -1, wxT("Hex flags"), position) //, wxDefaultSize, wxDIALOG_MODAL | wxRESIZE_BORDER )
 {  
     int i;
 
@@ -278,15 +278,15 @@ CMapFlagDlg::CMapFlagDlg(wxWindow *parent, CLand * pLand, wxPoint & position)
     wxStaticText    * st;
 
 
-    m_btnSet    = new wxButton  (this, wxID_OK    , "Set" );
-    m_btnRemove = new wxButton  (this, wxID_NO    , "Remove" );
-    m_btnCancel = new wxButton  (this, wxID_CANCEL, "Cancel" );
+    m_btnSet    = new wxButton  (this, wxID_OK    , wxT("Set") );
+    m_btnRemove = new wxButton  (this, wxID_NO    , wxT("Remove") );
+    m_btnCancel = new wxButton  (this, wxID_CANCEL, wxT("Cancel") );
 
     for (i=0; i<LAND_FLAG_COUNT; i++)
     {
-        m_FlagText[i]  = new wxTextCtrl(this, -1, pLand->FlagText[i].GetData(), wxDefaultPosition, wxDefaultSize); //wxSize(100,30));
+        m_FlagText[i]  = new wxTextCtrl(this, -1, wxString::FromAscii(pLand->FlagText[i].GetData()), wxDefaultPosition, wxDefaultSize); //wxSize(100,30));
         sizer          = new wxBoxSizer( wxHORIZONTAL );
-        st             = new wxStaticText(this, -1, LandFlagLabel[i]);
+        st             = new wxStaticText(this, -1, wxString::FromAscii(LandFlagLabel[i]));
 
         sizer->Add(st           , 0, wxALIGN_LEFT  | wxALL           , SPACER_NARROW );
         sizer->Add(m_FlagText[i], 1, wxALIGN_RIGHT | wxALL | wxEXPAND, SPACER_NARROW );

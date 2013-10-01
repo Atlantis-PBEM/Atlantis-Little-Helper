@@ -236,6 +236,7 @@ bool CAhApp::OnInit()
     m_OrderHash.Insert("form"       ,     (void*)O_FORM       );
     m_OrderHash.Insert("give"       ,     (void*)O_GIVE       );
     m_OrderHash.Insert("giveif"     ,     (void*)O_GIVEIF     );
+    m_OrderHash.Insert("take"       ,     (void*)O_TAKE       );
     m_OrderHash.Insert("send"       ,     (void*)O_SEND       );
     m_OrderHash.Insert("withdraw"   ,     (void*)O_WITHDRAW   );
     m_OrderHash.Insert("leave"      ,     (void*)O_LEAVE      );
@@ -358,10 +359,8 @@ bool CAhApp::OnInit()
 
 
     if (argc>1)
-    {
         for (i=1; i<argc; i++)
-            LoadReport(argv[i], i>1);
-    }
+            LoadReport(wxString(argv[i]).mb_str(), i>1);
     else
         if (atol(GetConfig(SZ_SECT_COMMON, SZ_KEY_LOAD_REP)) && (m_ReportDates.Count() > 0) )
         {
@@ -1484,7 +1483,7 @@ void CAhApp::SetMapFrameTitle()
     if (m_OrdersAreChanged)
         S << " [modified]";
     if (pMapFrame)
-        pMapFrame->SetTitle(S.GetData());
+        pMapFrame->SetTitle(wxString::FromAscii(S.GetData()));
 }
 
 //-------------------------------------------------------------------------
@@ -1571,23 +1570,23 @@ int  CAhApp::SaveOrders(const char * FNameOut, int FactionId)
 
         CStr File;
         wxString CurrentDir = wxGetCwd();
-        //MakePathFull(CurrentDir.c_str(), FName);
+        //MakePathFull(CurrentDir.mb_str(), FName);
         GetFileFromPath(FName.GetData(), File);
 
-        MakePathFull(CurrentDir.c_str(), Dir);
+        MakePathFull(CurrentDir.mb_str(), Dir);
         wxFileDialog dialog((CMapFrame*)m_Frames[AH_FRAME_MAP],
-                            Prompt.GetData(),
-                            Dir.GetData(),
-                            File.GetData(),
-                            SZ_ORD_FILES,
+                            wxString::FromAscii(Prompt.GetData()),
+                            wxString::FromAscii(Dir.GetData()),
+                            wxString::FromAscii(File.GetData()),
+                            wxT(SZ_ORD_FILES),
                             wxSAVE | wxOVERWRITE_PROMPT );
         err = dialog.ShowModal();
         wxSetWorkingDirectory(CurrentDir);
 
         if (wxID_OK == err)
         {
-            FName = dialog.GetPath().c_str();
-            MakePathRelative(CurrentDir.c_str(), FName);
+            FName = dialog.GetPath().mb_str();
+            MakePathRelative(CurrentDir.mb_str(), FName);
             GetDirFromPath(FName.GetData(), Dir);
             SetConfig(SZ_SECT_FOLDERS, SZ_KEY_FOLDER_ORDERS, Dir.GetData() );
         }
@@ -2103,15 +2102,11 @@ void CAhApp::WriteMagesCSV()
 
     CExportMagesCSVDlg Dlg(m_Frames[AH_FRAME_MAP], FName.GetData());
     if (wxID_OK == Dlg.ShowModal())
-    {
-
-
-        m_pAtlantis->WriteMagesCSV(Dlg.m_pFileName->GetValue(),
-                                   0==SafeCmp(Dlg.m_pOrientation->GetValue(), SZ_VERTICAL),
-                                   Dlg.m_pSeparator->GetValue(),
+        m_pAtlantis->WriteMagesCSV(Dlg.m_pFileName->GetValue().mb_str(),
+                                   0==SafeCmp(Dlg.m_pOrientation->GetValue().mb_str(), SZ_VERTICAL),
+                                   Dlg.m_pSeparator->GetValue().mb_str(),
                                    Dlg.m_nFormat
                                   );
-    }
 }
 
 //-------------------------------------------------------------------------
@@ -2370,7 +2365,7 @@ void CAhApp::CheckProduction()
 
     S.Empty();
     if (Error.IsEmpty())
-        wxMessageBox("No problem with resources for production detected");
+        wxMessageBox(wxT("No problem with resources for production detected"));
     else
     {
         S << "The following problems were detected:" << EOL_SCR << EOL_SCR << Error;
@@ -2411,7 +2406,7 @@ void CAhApp::CheckSailing()
 
     S.Empty();
     if (Error.IsEmpty())
-        wxMessageBox("No problems with sailing detected");
+        wxMessageBox(wxT("No problems with sailing detected"));
     else
     {
         S << "The following problems were detected:" << EOL_SCR << EOL_SCR << Error;
@@ -2659,7 +2654,7 @@ int  CAhApp::LoadReport  (const char * FNameIn, BOOL Join)
         switch (err)
         {
             case ERR_INV_TURN:
-                wxMessageBox("Wrong turn in the report", "Error");
+                wxMessageBox(wxT("Wrong turn in the report"), wxT("Error"));
                 break;
         }
         SetOrdersChanged(FALSE);
@@ -2752,10 +2747,10 @@ int  CAhApp::LoadReport(BOOL Join)
 
     wxString CurrentDir = wxGetCwd();
     wxFileDialog dialog(m_Frames[AH_FRAME_MAP],
-                        "Load Report",
-                        Dir.GetData(),
-                        "",
-                        SZ_REP_FILES,
+                        wxT("Load Report"),
+                        wxString::FromAscii(Dir.GetData()),
+                        wxT(""),
+                        wxT(SZ_REP_FILES),
                         wxOPEN);
     rc = dialog.ShowModal();
     wxSetWorkingDirectory(CurrentDir);
@@ -2763,8 +2758,8 @@ int  CAhApp::LoadReport(BOOL Join)
     if (wxID_OK == rc)
     {
         CStr S;
-        S = dialog.GetPath().c_str();
-        MakePathRelative(CurrentDir.c_str(), S);
+        S = dialog.GetPath().mb_str();
+        MakePathRelative(CurrentDir.mb_str(), S);
 
         GetDirFromPath(S.GetData(), Dir);
         SetConfig(SZ_SECT_FOLDERS, key, Dir.GetData() );
@@ -3473,10 +3468,10 @@ void CAhApp::LoadOrders()
 
     wxString CurrentDir = wxGetCwd();
     wxFileDialog dialog(m_Frames[AH_FRAME_MAP],
-                        "Load orders",
-                        Dir.GetData(),
-                        "",
-                        SZ_ORD_FILES,
+                        wxT("Load orders"),
+                        wxString::FromAscii(Dir.GetData()),
+                        wxT(""),
+                        wxT(SZ_ORD_FILES),
                         wxOPEN );
     rc = dialog.ShowModal();
     wxSetWorkingDirectory(CurrentDir);
@@ -3484,8 +3479,8 @@ void CAhApp::LoadOrders()
     if (wxID_OK==rc)
     {
         CStr S;
-        S = dialog.GetPath().c_str();
-        MakePathRelative(CurrentDir.c_str(), S);
+        S = dialog.GetPath().mb_str();
+        MakePathRelative(CurrentDir.mb_str(), S);
         GetDirFromPath(S.GetData(), Dir);
         SetConfig(SZ_SECT_FOLDERS, SZ_KEY_FOLDER_ORDERS, Dir.GetData() );
 
@@ -3818,7 +3813,7 @@ void CAhApp::ViewFactionOverview()
         ShowMessageBoxSwitchable("Hint", "Faction overview can be generated using only selected area on the map", "FACTION_OVERVIEW");
 
     if (pMapPane->HaveSelection() &&
-        wxYES == wxMessageBox("Use only selected hexes?", "Confirm", wxYES_NO, NULL))
+        wxYES == wxMessageBox(wxT("Use only selected hexes?"), wxT("Confirm"), wxYES_NO, NULL))
         Selected = TRUE;
 
     skilllen    = strlen(PRP_SKILL_POSTFIX);
@@ -4137,7 +4132,7 @@ void CAhApp::CheckMonthLongOrders()
         ShowError(Errors.GetData(), Errors.GetLength(), TRUE);
 
     if (0==errcount)
-        wxMessageBox("No problems found.", "Order checking", wxOK | wxCENTRE, m_Frames[AH_FRAME_MAP]);
+        wxMessageBox(wxT("No problems found."), wxT("Order checking"), wxOK | wxCENTRE, m_Frames[AH_FRAME_MAP]);
 
 
 //int wxMessageBox(const wxString& message, const wxString& caption = "Message", int style = wxOK | wxCENTRE,
@@ -4204,7 +4199,7 @@ void CAhApp::ShowUnitsMovingIntoHex(long CurHexId, CPlane * pCurPlane)
             ShowError(UnitText.GetData(), UnitText.GetLength(), TRUE);
     }
     else
-        wxMessageBox("Found no units moving into the current hex.", "Units moving", wxOK | wxCENTRE, m_Frames[AH_FRAME_MAP]);
+        wxMessageBox(wxT("Found no units moving into the current hex."), wxT("Units moving"), wxOK | wxCENTRE, m_Frames[AH_FRAME_MAP]);
 
 
     FoundUnits.DeleteAll();
@@ -4355,8 +4350,8 @@ void CAhApp::AddTempHex(int X, int Y, int Plane)
     assert(Plane == pPlane->Id);
     
     CStr     sTerrain;
-    wxString strTerrain = wxGetTextFromUser("Terrain", "Please specify terrain type");
-    sTerrain = strTerrain;
+    wxString strTerrain = wxGetTextFromUser(wxT("Terrain"), wxT("Please specify terrain type"));
+    sTerrain = strTerrain.mb_str();
         
     if (sTerrain.IsEmpty())
         return;    
@@ -4459,7 +4454,7 @@ BOOL CAhApp::GetExportHexOptions(CStr & FName, CStr & FMode, SAVE_HEX_OPTIONS & 
     if (stFName.IsEmpty())
         stFName.Format("map.%04d", m_pAtlantis->m_YearMon);
 
-    dlg.m_tcFName         ->SetValue(stFName.GetData());
+    dlg.m_tcFName         ->SetValue(wxString::FromAscii(stFName.GetData()));
 
     dlg.m_rbHexNew        ->SetValue(HexNew      == stHexIncl);
     dlg.m_rbHexCurrent    ->SetValue(HexCurrent  == stHexIncl);
@@ -4478,7 +4473,7 @@ BOOL CAhApp::GetExportHexOptions(CStr & FName, CStr & FMode, SAVE_HEX_OPTIONS & 
 
     if (wxID_OK == dlg.ShowModal())
     {
-        stFName.SetStr(dlg.m_tcFName->GetValue());
+        stFName.SetStr(dlg.m_tcFName->GetValue().mb_str());
 
         if (dlg.m_rbHexNew->GetValue())
             stHexIncl = HexNew;
@@ -4612,7 +4607,7 @@ void CAhApp::FindTradeRoutes()
     
     pMapPane->GetSelectedOrAllHexes(Hexes, TRUE);
     if (0==Hexes.Count())
-        wxMessageBox("Please select area on the map first.");
+        wxMessageBox(wxT("Please select area on the map first."));
     for (i=0; i<Hexes.Count(); i++)
     {
         pSellLand = (CLand*)Hexes.At(i);
@@ -4667,7 +4662,7 @@ void CAhApp::FindTradeRoutes()
     }
     
     if (Report.IsEmpty())
-        wxMessageBox("No trade routes found.");
+        wxMessageBox(wxT("No trade routes found."));
     else
         ShowError(Report.GetData()      , Report.GetLength()      , TRUE);
 
@@ -5078,7 +5073,7 @@ void FontToStr(const wxFont * font, CStr & s)
       << (long)font->GetStyle    ()  << ","
       << (long)font->GetWeight   ()  << ","
       << (long)font->GetEncoding ()  << ","
-      <<       font->GetFaceName () ;
+      <<       font->GetFaceName ().mb_str() ;
 }
 
 //--------------------------------------------------------------------------
@@ -5110,7 +5105,7 @@ wxFont * NewFontFromStr(const char * p)
         p = S.GetToken(SkipSpaces(p), ',');  style    = atol(S.GetData());
         p = S.GetToken(SkipSpaces(p), ',');  weight   = atol(S.GetData());
         p = S.GetToken(SkipSpaces(p), ',');  encoding = atol(S.GetData());
-                                             facename = SkipSpaces(p);
+                                             facename = wxString::FromAscii(SkipSpaces(p));
     }
     else
     {
@@ -5119,7 +5114,7 @@ wxFont * NewFontFromStr(const char * p)
         style    = wxNORMAL;
         weight   = wxNORMAL;
         encoding = wxFONTENCODING_SYSTEM;
-        facename = "";
+        facename = wxT("");
     }
 
     font = new wxFont(size, family, style, weight, FALSE, facename, (wxFontEncoding)encoding);

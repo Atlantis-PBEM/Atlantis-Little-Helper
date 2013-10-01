@@ -977,21 +977,23 @@ int CAtlaParser::ParseAttitudes(CStr & Line, BOOL Join)
 
 void CAtlaParser::CheckExit(CPlane * pPlane, int Direction, CLand * pLandSrc, CLand * pLandExit)
 {
-    int x1,y1,x2,y2, z;
+    int x1,y1,x2,y2, z, width;
 
-    if (0==pPlane->Width)
+    LandIdToCoord(pLandSrc ->Id, x1, y1, z);
+    LandIdToCoord(pLandExit->Id, x2, y2, z);
+
+    //if (0==pPlane->Width)
         switch (Direction%6)
         {
         case Northeast:
 
         case Southeast:
-            LandIdToCoord(pLandSrc ->Id, x1, y1, z);
-            LandIdToCoord(pLandExit->Id, x2, y2, z);
-            if (x2<x1)
+	    width = x1-x2+1;
+            if (x2<x1 && width>pPlane->Width)
             {
                 pPlane->WestEdge   = x2;
                 pPlane->EastEdge   = x1;
-                pPlane->Width      = pPlane->EastEdge - pPlane->WestEdge + 1;
+                pPlane->Width      = width;
 
                 pPlane->EdgeSrcId  = pLandSrc ->Id;
                 pPlane->EdgeExitId = pLandExit->Id;
@@ -1001,13 +1003,12 @@ void CAtlaParser::CheckExit(CPlane * pPlane, int Direction, CLand * pLandSrc, CL
 
         case Northwest:
         case Southwest:
-            LandIdToCoord(pLandSrc ->Id, x1, y1, z);
-            LandIdToCoord(pLandExit->Id, x2, y2, z);
-            if (x2>x1)
+	    width = x2-x1+1;
+            if (x2>x1 && width>pPlane->Width)
             {
                 pPlane->WestEdge   = x1;
                 pPlane->EastEdge   = x2;
-                pPlane->Width      = pPlane->EastEdge - pPlane->WestEdge + 1;
+                pPlane->Width      = width;
 
                 pPlane->EdgeSrcId  = pLandSrc ->Id;
                 pPlane->EdgeExitId = pLandExit->Id;
@@ -1015,6 +1016,20 @@ void CAtlaParser::CheckExit(CPlane * pPlane, int Direction, CLand * pLandSrc, CL
             }
             break;
         }
+
+		if (pPlane->Width > 0)
+		{
+			if (x1 > pPlane->EastEdge)
+				pPlane->EastEdge = x1;
+			if (x1 < pPlane->WestEdge)
+				pPlane->WestEdge = x1;
+			if (x2 > pPlane->EastEdge)
+				pPlane->EastEdge = x2;
+			if (x2 < pPlane->WestEdge)
+				pPlane->WestEdge = x2;
+			pPlane->Width = pPlane->EastEdge - pPlane->WestEdge + 1;
+			pPlane->Width += pPlane->Width & 1;
+		}
 }
 
 //----------------------------------------------------------------------
@@ -2098,23 +2113,24 @@ int CAtlaParser::ParseUnit(CStr & FirstLine, BOOL Join)
         p  = S1.GetToken(p, '(');
         p  = N1.GetToken(p, ')');
         n1 = atol(N1.GetData());
-        if (n1<=0)
-            return ERR_INV_UNIT;
+//        if (n1<=0)
+//            return ERR_INV_UNIT;
+        if (n1>0)
+		{
+			pFaction = GetFaction(n1);
+			if (!pFaction)
+			{
+				pFaction       = new CFaction;
+				pFaction->Name = S1;
+				pFaction->Id   = n1;
+				m_Factions.Insert(pFaction);
+			}
+			pUnit->FactionId= pFaction->Id;
+			pUnit->pFaction = pFaction;
 
-        pFaction = GetFaction(n1);
-        if (!pFaction)
-        {
-            pFaction       = new CFaction;
-            pFaction->Name = S1;
-            pFaction->Id   = n1;
-            m_Factions.Insert(pFaction);
-        }
-        pUnit->FactionId= pFaction->Id;
-        pUnit->pFaction = pFaction;
-
-        pUnit->IsOurs = pUnit->IsOurs ||
-                (m_CrntFactionId > 0 && pUnit->FactionId == m_CrntFactionId);
-
+			pUnit->IsOurs = pUnit->IsOurs ||
+					(m_CrntFactionId > 0 && pUnit->FactionId == m_CrntFactionId);
+		}
     }
 
     // ===== Check faction attitude and set stances prop
@@ -3686,7 +3702,7 @@ BOOL CAtlaParser::SaveOneHex(CFileWriter & Dest, CLand * pLand, CPlane * pPlane,
         ComposeProductsLine(pLand, EOL_FILE, sLine);
 
     sLine << EOL_FILE << "Exits:" << EOL_FILE ;
-    sLine << sExits;
+    sLine << pLand->Exits;
     sLine.TrimRight(TRIM_ALL);
     sLine << EOL_FILE << EOL_FILE;
 
@@ -4705,6 +4721,11 @@ void CAtlaParser::RunLandOrders(CLand * pLand, const char * sCheckTeach)
                             RunOrder_Give(Line, ErrorLine, skiperror, pUnit, pLand, p, TRUE);
                         break;
 
+                    case O_TAKE:
+                        if (SQ_GIVE == sequence)
+                            RunOrder_Take(Line, ErrorLine, skiperror, pUnit, pLand, p, TRUE);
+                        break;
+
                     case O_SEND:
                         if (SQ_BUY+1 == sequence) // send is after buy
                             RunOrder_Send(Line, ErrorLine, skiperror, pUnit, pLand, p);
@@ -5443,7 +5464,7 @@ void CAtlaParser::RunOrder_Produce(CStr & Line, CStr & ErrorLine, BOOL skiperror
 
 //-------------------------------------------------------------
 
-BOOL CAtlaParser::GetItemAndAmountForGive(CStr & Line, CStr & ErrorLine, BOOL skiperror, CUnit * pUnit, CLand * pLand, const char * params, CStr & Item, int & amount)
+BOOL CAtlaParser::GetItemAndAmountForGive(CStr & Line, CStr & ErrorLine, BOOL skiperror, CUnit * pUnit, CLand * pLand, const char * params, CStr & Item, int & amount, const char * command, CUnit * pUnit2)
 {
     BOOL                Ok = FALSE;
     CStr                S1  (32);
@@ -5464,10 +5485,19 @@ BOOL CAtlaParser::GetItemAndAmountForGive(CStr & Line, CStr & ErrorLine, BOOL sk
         params = SkipSpaces(Item.GetToken(params, " \t", ch, TRIM_ALL));
 
         if (0 != stricmp("UNIT", S1.GetData()))
-            if ( !pUnit->GetProperty(Item.GetData(), type, (const void*&)item_avail, eNormal) || (eLong!=type))
+            if (0 == stricmp("TAKE", command))
             {
-                SHOW_WARN_CONTINUE(" - Can not give that!");
-                break;
+                pUnit2->GetProperty(Item.GetData(), type, (const void*&)item_avail, eNormal);
+                if (eLong!=type)
+                    SHOW_WARN_CONTINUE(" - Can not take that!");
+            }
+            else
+            {
+                if ( !pUnit->GetProperty(Item.GetData(), type, (const void*&)item_avail, eNormal) || (eLong!=type))
+                {
+                    SHOW_WARN_CONTINUE(" - Can not " << command << " that!");
+                    break;
+                }
             }
 
         if (0 == stricmp("UNIT", S1.GetData()))
@@ -5492,13 +5522,13 @@ BOOL CAtlaParser::GetItemAndAmountForGive(CStr & Line, CStr & ErrorLine, BOOL sk
 
         if (amount < 0)
         {
-            SHOW_WARN_CONTINUE(" - Can not give negative amount " << (long)amount);
+            SHOW_WARN_CONTINUE(" - Can not " << command << " negative amount " << (long)amount);
             break;
         }
 
         if (item_avail < amount)
         {
-            SHOW_WARN_CONTINUE(" - Too many. Give " << item_avail << " at most.");
+            SHOW_WARN_CONTINUE(" - Too many. " << command << " " << item_avail << " at most.");
             break;
         }
 
@@ -5596,7 +5626,7 @@ void CAtlaParser::RunOrder_Give(CStr & Line, CStr & ErrorLine, BOOL skiperror, C
                 SHOW_WARN_CONTINUE(" - Can not locate target unit");
         }
 
-        if (GetItemAndAmountForGive(Line, ErrorLine, skiperror, pUnit, pLand, params, Item, amount) )
+        if (GetItemAndAmountForGive(Line, ErrorLine, skiperror, pUnit, pLand, params, Item, amount, "give", NULL) )
         {
             // NULL==pUnit2 is normal, always check!
 
@@ -5781,6 +5811,98 @@ BOOL CAtlaParser::FindTargetsForSend(CStr & Line, CStr & ErrorLine, BOOL skiperr
 
 //-------------------------------------------------------------
 
+void CAtlaParser::RunOrder_Take(CStr & Line, CStr & ErrorLine, BOOL skiperror, CUnit * pUnit, CLand * pLand, const char * params, BOOL IgnoreMissingTarget)
+{
+    EValueType          type;
+    long                n1;
+    CBaseObject         Dummy;
+    int                 idx;
+    CUnit             * pUnit2 = NULL;
+    const void        * value;
+    const void        * value2;
+
+//    int               * weights;    // calculate weight change while giving
+//    const char       ** movenames;
+//    int                 movecount;
+
+    CStr                Item;
+    int                 amount;
+    char                ch;
+
+    do
+    {
+        // TAKE FROM <TARGET> (<AMOUNT>|ALL) <ITEM> [EXCEPT <AMOUNT>]
+        // Where:
+        //   <TARGET> is
+        //     <UNIT ID>                          existing unit
+        //     NEW <UNIT ID>                      new own unit
+        //     FACTION <FACTION ID> NEW <UNIT ID> other faction new unit
+
+        // Remove FROM token from the params
+        params = SkipSpaces(Item.GetToken(params, " \t", ch, TRIM_ALL));
+
+        if (0!=stricmp("FROM", Item.GetData()))
+            SHOW_WARN_CONTINUE(" - Invalid TARGET command");
+
+        if (!GetTargetUnitId(params, pUnit->FactionId, n1))
+            SHOW_WARN_CONTINUE(" - Invalid unit id");
+        if (n1==pUnit->Id)
+            SHOW_WARN_CONTINUE(" - Taking from yourself");
+        if (0!=n1)
+        {
+            Dummy.Id = n1;
+            if (pLand->Units.Search(&Dummy, idx))
+                pUnit2 = (CUnit*)pLand->Units.At(idx);
+            else
+                SHOW_WARN_CONTINUE(" - Can not locate target unit");
+        }
+        else
+            SHOW_WARN_CONTINUE(" - Invalid unit id");
+         
+        if (pUnit2 && pUnit->FactionId!=pUnit2->FactionId)
+            SHOW_WARN_CONTINUE(" - Target unit must belong to the same faction");
+
+        if (pUnit2)
+        {
+            if (GetItemAndAmountForGive(Line, ErrorLine, skiperror, pUnit, pLand, params, Item, amount, "take", pUnit2) )
+            {
+                if (0==stricmp("UNIT", Item.GetData()))
+                    SHOW_WARN_CONTINUE(" - Taking unit is not allowed");
+
+                if (!pUnit2->GetProperty(Item.GetData(), type, value, eNormal) || (eLong!=type))
+                    SHOW_WARN_CONTINUE(" - Can not take " << Item);
+
+                if (PE_OK!=pUnit2->SetProperty(Item.GetData(), type, (const void*)((long)value-amount), eNormal))
+                    SHOW_WARN_CONTINUE(NOSET << BUG);
+
+                if (!pUnit->GetProperty(Item.GetData(), type, value2, eNormal) )
+                {
+                    value2 = (const void*)0L;
+                    // set original value to 0!
+                    if (PE_OK!=pUnit->SetProperty(Item.GetData(), type, value2, eNormal))
+                        SHOW_WARN_CONTINUE(NOSETUNIT << n1 << BUG);
+                }
+                else if (eLong!=type)
+                    SHOW_WARN_CONTINUE(NOTNUMERIC << n1 << BUG);
+
+                if (PE_OK!=pUnit->SetProperty(Item.GetData(), type, (const void*)((long)value2+amount), eNormal))
+                    SHOW_WARN_CONTINUE(NOSET << BUG);
+                if (0==stricmp(PRP_SILVER, Item.GetData()))
+                    pUnit->SilvRcvd += amount;
+
+                // check how giving men affects skills
+                AdjustSkillsAfterGivingMen(pUnit2, pUnit, Item, amount);
+
+                pUnit->CalcWeightsAndMovement();
+                pUnit2->CalcWeightsAndMovement();
+            }
+        }
+
+    } while (FALSE);
+}
+
+//-------------------------------------------------------------
+
 void CAtlaParser::RunOrder_Send(CStr & Line, CStr & ErrorLine, BOOL skiperror, CUnit * pUnit, CLand * pLand, const char * params)
 {
     CUnit             * pUnit2 = NULL;
@@ -5817,7 +5939,7 @@ void CAtlaParser::RunOrder_Send(CStr & Line, CStr & ErrorLine, BOOL skiperror, C
         if (!pLand2)
             SHOW_WARN_CONTINUE(" - Unable to locate target hex");
 
-        if (GetItemAndAmountForGive(Line, ErrorLine, skiperror, pUnit, pLand, params, Item, amount) )
+        if (GetItemAndAmountForGive(Line, ErrorLine, skiperror, pUnit, pLand, params, Item, amount, "send", NULL) )
         {
             if (!pUnit->GetProperty(Item.GetData(), type, value, eNormal) || (eLong!=type))
                 SHOW_WARN_CONTINUE(" - Can not send " << Item);

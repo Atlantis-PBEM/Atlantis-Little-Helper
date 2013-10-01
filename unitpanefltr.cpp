@@ -131,9 +131,9 @@ void CUnitPaneFltr::Update(CUnitFilterDlg * pFilter)
     {
         if (pFilter)
         {
-            Property[i] = pFilter->m_cbProperty[i]->GetValue();
-            Compare [i] = pFilter->m_cbCompare [i]->GetValue();
-            sValue  [i] = pFilter->m_tcValue   [i]->GetValue();
+            Property[i] = pFilter->m_cbProperty[i]->GetValue().mb_str();
+            Compare [i] = pFilter->m_cbCompare [i]->GetValue().mb_str();
+            sValue  [i] = pFilter->m_tcValue   [i]->GetValue().mb_str();
         }
         else
         {
@@ -181,7 +181,7 @@ void CUnitPaneFltr::Update(CUnitFilterDlg * pFilter)
         if (pFilter)
         {
             bUsePython = TrackingGroup.IsEmpty() && pFilter->m_rbUsePython->GetValue();
-            sPythonText= pFilter->m_tcFilterText->GetValue();
+            sPythonText= pFilter->m_tcFilterText->GetValue().mb_str();
         }
         else
         {
@@ -398,8 +398,8 @@ void CUnitPaneFltr::OnColClicked(wxListEvent& event)
     wxMenu  menu;
 
     m_ColClickedFltr = event.m_col;
-    menu.Append(menu_Popup_SetSort  , "Set sort order");
-    menu.Append(menu_Popup_Filter   , "Filter"        );
+    menu.Append(menu_Popup_SetSort  , wxT("Set sort order"));
+    menu.Append(menu_Popup_Filter   , wxT("Filter"        ));
 
     PopupMenu( &menu, event.GetPoint().x, event.GetPoint().y);
 }
@@ -424,14 +424,14 @@ void CUnitPaneFltr::OnRClick(wxListEvent& event)
 {
     wxMenu  menu;
 
-    menu.Append(menu_Popup_Filter  , "Filter"        );
+    menu.Append(menu_Popup_Filter  , wxT("Filter")        );
 
     if (GetSelectedItemCount()>1)
     {
         // multiple units
-        menu.Append(menu_Popup_IssueOrders     , "Issue orders");
-        menu.Append(menu_Popup_UnitFlags       , "Set custom flags"    );
-        menu.Append(menu_Popup_AddToTracking   , "Add to a tracking group");
+        menu.Append(menu_Popup_IssueOrders     , wxT("Issue orders"));
+        menu.Append(menu_Popup_UnitFlags       , wxT("Set custom flags")    );
+        menu.Append(menu_Popup_AddToTracking   , wxT("Add to a tracking group"));
     }
 
 

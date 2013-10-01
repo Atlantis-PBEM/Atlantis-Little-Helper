@@ -63,7 +63,7 @@ void CFlatPanel::OnSize(wxSizeEvent& event)
 //==========================================================================
 
 CAhFrame::CAhFrame(wxWindow* parent, const char * title, long style)
-           :wxFrame(parent, wxID_ANY, title, wxDefaultPosition, wxSize(10,10), style)
+           :wxFrame(parent, wxID_ANY, wxString::FromAscii(title), wxDefaultPosition, wxSize(10,10), style)
 {
     memset(m_Panes , 0, sizeof(m_Panes ));
 }
@@ -191,7 +191,7 @@ BEGIN_EVENT_TABLE(CResizableDlg, wxDialog)
 END_EVENT_TABLE()
 
 CResizableDlg::CResizableDlg(wxWindow * parent, const char * title, const char * szConfigSection, long style)
-              :wxDialog( parent, -1, title, wxDefaultPosition, wxDefaultSize, style | wxCAPTION  )
+              :wxDialog( parent, -1, wxString::FromAscii(title), wxDefaultPosition, wxDefaultSize, style | wxCAPTION  )
 {
     m_sConfigSection = szConfigSection;
 }

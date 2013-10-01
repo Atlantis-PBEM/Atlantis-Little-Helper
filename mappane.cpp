@@ -361,7 +361,7 @@ void CMapPane::ApplyOneColor(wxColour & cr, const char * name)
     if (F.Open(S.GetData()))
     {
         F.Close();
-        if (bmp.LoadFile(S.GetData(), wxBITMAP_TYPE_BMP ))
+        if (bmp.LoadFile(wxString::FromAscii(S.GetData()), wxBITMAP_TYPE_BMP ))
         {
             pBrush = new wxBrush(bmp);
         }
@@ -1357,7 +1357,7 @@ void CMapPane::DrawTaxTrade(wxDC * pDC, CLand * pLand, wxPoint * point)
         }
 
         if (*buf)
-            pDC->DrawText(buf,  point[1].x, point[1].y+1 );
+            pDC->DrawText(wxString::FromAscii(buf),  point[1].x, point[1].y+1 );
     }
 }
 
@@ -2574,7 +2574,7 @@ void CMapPane::DrawCitiesAndWeather(wxDC * pDC, wxRect * pRect, CPlane * pPlane)
         pLand = (CLand*)m_pCities->At(i);
         LandIdToCoord(pLand->Id, nx, ny, nz);
         GetHexCenter(nx, ny, wx, wy);
-        pDC->GetTextExtent(pLand->CityName.GetData(), &w, &h, &descent, &ext);
+        pDC->GetTextExtent(wxString::FromAscii(pLand->CityName.GetData()), &w, &h, &descent, &ext);
 
         if (pPlane && (pPlane->Width>0) )
         {
@@ -2585,12 +2585,12 @@ void CMapPane::DrawCitiesAndWeather(wxDC * pDC, wxRect * pRect, CPlane * pPlane)
             wx += dwx;
             while (wx < pRect->x + pRect->width + m_HexSize)
             {
-                pDC->DrawText(pLand->CityName.GetData(), wx-w/2, wy-ext);
+                pDC->DrawText(wxString::FromAscii(pLand->CityName.GetData()), wx-w/2, wy-ext);
                 wx += dwx;
             }
         }
         else
-            pDC->DrawText(pLand->CityName.GetData(), wx-w/2, wy-ext);
+            pDC->DrawText(wxString::FromAscii(pLand->CityName.GetData()), wx-w/2, wy-ext);
     }
 
     // now for the weather
@@ -2800,7 +2800,7 @@ void CMapPane::DrawCoordPanes(wxDC * pDC, int mapwidth, int mapheight, CPlane * 
     GetHexNo(nx, ny, left, top);
 
     // horizontal pane
-    pDC->GetTextExtent("8", &w, &h, &descent, &ext);
+    pDC->GetTextExtent(wxT("8"), &w, &h, &descent, &ext);
     txty = mapheight + (COORD_PANE_HEIGHT-h)/2;
     nx--;
     while (TRUE)
@@ -2808,13 +2808,13 @@ void CMapPane::DrawCoordPanes(wxDC * pDC, int mapwidth, int mapheight, CPlane * 
         nx++;
         GetHexCenter(nx, ny, x, y);
         sprintf(buf, "%d", NormalizeHexX(nx, pPlane));
-        pDC->GetTextExtent(buf, &w, &h, &descent, &ext);
+        pDC->GetTextExtent(wxString::FromAscii(buf), &w, &h, &descent, &ext);
         txtx = x - w/2;
         if (txtx < left)
             continue;
         if (x + w/2 >= right)
             break;
-        pDC->DrawText(buf, txtx, txty);
+        pDC->DrawText(wxString::FromAscii(buf), txtx, txty);
         left = x + w/2 + 5;
     }
 
@@ -2825,14 +2825,14 @@ void CMapPane::DrawCoordPanes(wxDC * pDC, int mapwidth, int mapheight, CPlane * 
         ny++;
         GetHexCenter(nx, ny, x, y);
         sprintf(buf, "%d", ny);
-        pDC->GetTextExtent(buf, &w, &h, &descent, &ext);
+        pDC->GetTextExtent(wxString::FromAscii(buf), &w, &h, &descent, &ext);
         txtx = mapwidth + (COORD_PANE_WIDTH-w)/2;
         txty = y - h/2;
         if (txty < top)
             continue;
         if (y + h/2 >= bottom)
             break;
-        pDC->DrawText(buf, txtx, txty);
+        pDC->DrawText(wxString::FromAscii(buf), txtx, txty);
         top = y + h/2 + 10;
     }
 
@@ -3565,22 +3565,22 @@ void CMapPane::OnMouseEvent(wxMouseEvent& event)
 
         if (m_pPopupLand)
         {
-            menu.Append(menu_Popup_Flag, "Flags");
+            menu.Append(menu_Popup_Flag, wxT("Flags"));
             if (m_pPopupLand->Flags&LAND_BATTLE)
-                menu.Append(menu_Popup_Battles, "Battles");
-            menu.Append(menu_Popup_Financial   , "Financial details for the hex");
+                menu.Append(menu_Popup_Battles, wxT("Battles"));
+            menu.Append(menu_Popup_Financial   , wxT("Financial details for the hex"));
             
             if (0==strcmp(m_pPopupLand->Name.GetData(), SZ_MANUAL_HEX_PROVINCE))
-                menu.Append(menu_Popup_Del_Hex   , "Remove Hex terrain");
+                menu.Append(menu_Popup_Del_Hex   , wxT("Remove Hex terrain"));
         }
         else
         {
-            menu.Append(menu_Popup_New_Hex   , "Set Hex terrain");
+            menu.Append(menu_Popup_New_Hex   , wxT("Set Hex terrain"));
         }
 
-        menu.Append(menu_Popup_Center      , "Center");
-        menu.Append(menu_Popup_WhoMovesHere, "Find units moving here");
-        menu.Append(menu_Popup_DistanceRing, "Distance ring");
+        menu.Append(menu_Popup_Center      , wxT("Center"));
+        menu.Append(menu_Popup_WhoMovesHere, wxT("Find units moving here"));
+        menu.Append(menu_Popup_DistanceRing, wxT("Distance ring"));
         
         
 
@@ -3633,9 +3633,9 @@ void CMapPane::MarkFoundHexes(CHexFilterDlg * pFilter)
     // read boxes values
     for (i=0; i<HEX_SIMPLE_FLTR_COUNT; i++)
     {
-        Property[i] = pFilter->m_cbProperty[i]->GetValue();
-        Compare [i] = pFilter->m_cbCompare [i]->GetValue();
-        sValue  [i] = pFilter->m_tcValue   [i]->GetValue();
+        Property[i] = pFilter->m_cbProperty[i]->GetValue().mb_str();
+        Compare [i] = pFilter->m_cbCompare [i]->GetValue().mb_str();
+        sValue  [i] = pFilter->m_tcValue   [i]->GetValue().mb_str();
 
         Property[i].TrimRight(TRIM_ALL);    Property[i].TrimLeft(TRIM_ALL);
         Compare [i].TrimRight(TRIM_ALL);    Compare [i].TrimLeft(TRIM_ALL);
@@ -3668,7 +3668,7 @@ void CMapPane::MarkFoundHexes(CHexFilterDlg * pFilter)
     }
 
     if (LandList.IsEmpty())
-        wxMessageBox("None found");
+        wxMessageBox(wxT("None found"));
     else
     {
         Msg << "=====================" << EOL_SCR << LandList;
@@ -3732,7 +3732,7 @@ void CMapPane::OnPopupMenuFlag(wxCommandEvent& WXUNUSED(event))
         {
         case wxID_OK:
             for (i=0; i<LAND_FLAG_COUNT; i++)
-                m_pPopupLand->FlagText[i] = Dlg.m_FlagText[i]->GetValue();
+                m_pPopupLand->FlagText[i] = Dlg.m_FlagText[i]->GetValue().mb_str();
             break;
         case wxID_NO:
             for (i=0; i<LAND_FLAG_COUNT; i++)
@@ -3822,9 +3822,9 @@ void CMapPane::OnPopupDeleteHex(wxCommandEvent & event)
 
 void CMapPane::OnPopupDistanceRing(wxCommandEvent & event)
 {
-    m_RingRadius = wxGetNumberFromUser( "Ring radius should be no more than 16,\nCancel removes the ring.", 
-                                        "Enter ring radius", 
-                                        "Distance ring", 
+    m_RingRadius = wxGetNumberFromUser( wxT("Ring radius should be no more than 16,\nCancel removes the ring."), 
+                                        wxT("Enter ring radius"), 
+                                        wxT("Distance ring"), 
                                         m_RingRadius>0 ? m_RingRadius : 4, 
                                         0, 16, this);
     m_RingX = m_SelHexX;

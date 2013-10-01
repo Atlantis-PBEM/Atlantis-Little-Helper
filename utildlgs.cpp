@@ -47,11 +47,11 @@ CShowOneDescriptionDlg::CShowOneDescriptionDlg(wxWindow * parent, const char * t
                        :CResizableDlg( parent, title, SZ_SECT_WND_DESCR_ONE)
 {
     wxBoxSizer * topsizer = new wxBoxSizer( wxVERTICAL );
-    wxButton   * pBtnDone = new wxButton  (this, wxID_CANCEL, "Done" );
-    wxButton   * pBtnSave = new wxButton  (this, wxID_OK    , "Save as" );
+    wxButton   * pBtnDone = new wxButton  (this, wxID_CANCEL, wxT("Done") );
+    wxButton   * pBtnSave = new wxButton  (this, wxID_OK    , wxT("Save as") );
     //wxTextCtrl * pText    = new wxTextCtrl(this, -1, description, wxDefaultPosition, wxDefaultSize,
     //                                       wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL );
-    wxTextCtrl * pText    = new wxTextCtrl(this, -1, "", wxDefaultPosition, wxDefaultSize,
+    wxTextCtrl * pText    = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize,
                                            wxTE_MULTILINE | wxTE_READONLY | wxHSCROLL );
     const char * p;
     int          count = 0;
@@ -79,7 +79,7 @@ CShowOneDescriptionDlg::CShowOneDescriptionDlg(wxWindow * parent, const char * t
 
     CResizableDlg::SetSize();
 
-    pText->SetValue(description);
+    pText->SetValue(wxString::FromAscii(description));
     pText->SetFont(*gpApp->m_Fonts[FONT_VIEW_DLG]);
     m_descr = description;
 
@@ -105,10 +105,10 @@ void CShowOneDescriptionDlg::OnButton(wxCommandEvent& event)
         if (!m_descr)
             return;
         wxFileDialog dialog(GetParent(),
-                            "Save current text",
-                            "",
-                            "",
-                            SZ_ALL_FILES,
+                            wxT("Save current text"),
+                            wxT(""),
+                            wxT(""),
+                            wxT(SZ_ALL_FILES),
                             wxSAVE |  wxOVERWRITE_PROMPT );
         err = dialog.ShowModal();
         wxSetWorkingDirectory(CurrentDir);
@@ -116,14 +116,14 @@ void CShowOneDescriptionDlg::OnButton(wxCommandEvent& event)
         if (wxID_OK == err)
         {
             CFileWriter F;
-            if (F.Open(dialog.GetPath().c_str()))
+            if (F.Open(dialog.GetPath().mb_str()))
             {
                 F.WriteBuf(m_descr, strlen(m_descr));
 
                 F.Close();
             }
             else
-                wxMessageBox("Can not open file");
+                wxMessageBox(wxT("Can not open file"));
 
         }
 
@@ -162,15 +162,15 @@ CShowDescriptionListDlg::CShowDescriptionListDlg(wxWindow * parent, const char *
     for (i=0; i<items->Count(); i++)
     {
         pObj = (CBaseObject * )items->At(i);
-        m_pList->Append(pObj->Name.GetData(), (void *)i);
+        m_pList->Append(wxString::FromAscii(pObj->Name.GetData()), (void *)i);
     }
 
 
     wxBoxSizer *topsizer = new wxBoxSizer( wxVERTICAL );
 
-    pBtnView         = new wxButton  (this, wxID_OK    , "View" );
-    pBtnStoreSize    = new wxButton  (this, wxID_CANCEL, "Done" );
-    pBtnSave         = new wxButton  (this, wxID_SAVE  , "Save as" );
+    pBtnView         = new wxButton  (this, wxID_OK    , wxT("View") );
+    pBtnStoreSize    = new wxButton  (this, wxID_CANCEL, wxT("Done") );
+    pBtnSave         = new wxButton  (this, wxID_SAVE  , wxT("Save as") );
 
     topsizer->Add(  m_pList  ,
                     1,                  // make vertically stretchable
@@ -233,10 +233,10 @@ void CShowDescriptionListDlg::SaveAs()
 
     wxString CurrentDir = wxGetCwd();
     wxFileDialog dialog(GetParent(),
-                        "Save current text",
-                        "",
-                        "",
-                        SZ_ALL_FILES,
+                        wxT("Save current text"),
+                        wxT(""),
+                        wxT(""),
+                        wxT(SZ_ALL_FILES),
                         wxSAVE |  wxOVERWRITE_PROMPT );
     err = dialog.ShowModal();
     wxSetWorkingDirectory(CurrentDir);
@@ -244,7 +244,7 @@ void CShowDescriptionListDlg::SaveAs()
     if (wxID_OK == err)
     {
         CFileWriter F;
-        if (F.Open(dialog.GetPath().c_str()))
+        if (F.Open(dialog.GetPath().mb_str()))
         {
             for (i=0; i<m_pItems->Count(); i++)
             {
@@ -257,7 +257,7 @@ void CShowDescriptionListDlg::SaveAs()
             F.Close();
         }
         else
-            wxMessageBox("Can not open file");
+            wxMessageBox(wxT("Can not open file"));
 
     }
 
@@ -321,34 +321,34 @@ CExportMagesCSVDlg::CExportMagesCSVDlg(wxWindow * parent, const char * fname)
     wxButton    * pBtn;
     wxStaticText* pStatic;
     const char  * p;
-    wxString      FName = fname;
+    wxString      FName = wxString::FromAscii(fname);
 
     wxBoxSizer  * topsizer = new wxBoxSizer( wxVERTICAL );
     wxBoxSizer  * horsizer;
     wxBoxSizer  * colsizer;
     wxBoxSizer  * layoutsizer;
 
-    m_pSeparator = new wxComboBox(this, -1, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN);
-    m_pSeparator->Append(",");
-    m_pSeparator->Append(";");
+    m_pSeparator = new wxComboBox(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN);
+    m_pSeparator->Append(wxT(","));
+    m_pSeparator->Append(wxT(";"));
     p = SkipSpaces(gpApp->GetConfig(m_sConfigSection.GetData(), SZ_KEY_SEPARATOR));
     if (p && *p)
-        m_pSeparator->SetValue(p);
+        m_pSeparator->SetValue(wxString::FromAscii(p));
     else
         m_pSeparator->SetSelection(0);
 
-    m_pOrientation = new wxComboBox(this, -1, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN );
-    m_pOrientation->Append(SZ_VERTICAL);
-    m_pOrientation->Append(SZ_HORIZONTAL);
+    m_pOrientation = new wxComboBox(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN );
+    m_pOrientation->Append(wxT(SZ_VERTICAL));
+    m_pOrientation->Append(wxT(SZ_HORIZONTAL));
     p = SkipSpaces(gpApp->GetConfig(m_sConfigSection.GetData(), SZ_KEY_ORIENTATION));
     if (p && *p)
-        m_pOrientation->SetValue(p);
+        m_pOrientation->SetValue(wxString::FromAscii(p));
     else
         m_pOrientation->SetSelection(0);
 
-    m_pRadio1 = new wxRadioButton(this, MCSV_RADIO_1, "Decorated", wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
-    m_pRadio2 = new wxRadioButton(this, MCSV_RADIO_2, "days");
-    m_pRadio3 = new wxRadioButton(this, MCSV_RADIO_3, "level(days)");
+    m_pRadio1 = new wxRadioButton(this, MCSV_RADIO_1, wxT("Decorated"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+    m_pRadio2 = new wxRadioButton(this, MCSV_RADIO_2, wxT("days"));
+    m_pRadio3 = new wxRadioButton(this, MCSV_RADIO_3, wxT("level(days)"));
 
     m_nFormat = atol(gpApp->GetConfig(m_sConfigSection.GetData(), SZ_KEY_FORMAT));
     switch (m_nFormat)
@@ -366,7 +366,7 @@ CExportMagesCSVDlg::CExportMagesCSVDlg(wxWindow * parent, const char * fname)
 
 
     colsizer = new wxBoxSizer( wxVERTICAL );
-        pStatic  = new wxStaticText(this, -1, "Format :", wxDefaultPosition, wxDefaultSize);
+        pStatic  = new wxStaticText(this, -1, wxT("Format :"), wxDefaultPosition, wxDefaultSize);
         colsizer->Add(pStatic, 0, wxALL, borderwidth );
         colsizer->Add(m_pRadio1, 0, wxALIGN_LEFT | wxALL, 1);
         colsizer->Add(m_pRadio2, 0, wxALIGN_LEFT | wxALL, 1);
@@ -376,13 +376,13 @@ CExportMagesCSVDlg::CExportMagesCSVDlg(wxWindow * parent, const char * fname)
 
     colsizer = new wxBoxSizer( wxVERTICAL );
         layoutsizer = new wxBoxSizer( wxHORIZONTAL );
-            pStatic  = new wxStaticText(this, -1, "Separator :", wxDefaultPosition, wxDefaultSize);
+            pStatic  = new wxStaticText(this, -1, wxT("Separator :"), wxDefaultPosition, wxDefaultSize);
             layoutsizer->Add(pStatic     , 1, wxALIGN_RIGHT | wxALL, borderwidth );
             layoutsizer->Add(m_pSeparator, 2, wxALIGN_RIGHT | wxALL, borderwidth );
         colsizer->Add(layoutsizer, 0, wxALL, borderwidth );
 
         layoutsizer = new wxBoxSizer( wxHORIZONTAL );
-            pStatic  = new wxStaticText(this, -1, "Orientation :", wxDefaultPosition, wxDefaultSize);
+            pStatic  = new wxStaticText(this, -1, wxT("Orientation :"), wxDefaultPosition, wxDefaultSize);
             layoutsizer->Add(pStatic       , 1, wxALIGN_RIGHT | wxALL, borderwidth );
             layoutsizer->Add(m_pOrientation, 2, wxALIGN_RIGHT | wxALL, borderwidth );
         colsizer->Add(layoutsizer, 0, wxALL, borderwidth );
@@ -395,12 +395,12 @@ CExportMagesCSVDlg::CExportMagesCSVDlg(wxWindow * parent, const char * fname)
 
     horsizer = new wxBoxSizer( wxHORIZONTAL );
 
-    pStatic  = new wxStaticText(this, -1, "Export to file :", wxDefaultPosition, wxDefaultSize);
+    pStatic  = new wxStaticText(this, -1, wxT("Export to file :"), wxDefaultPosition, wxDefaultSize);
     horsizer->Add(pStatic, 0, wxALL, borderwidth );
 
     horsizer->Add(m_pFileName, 1, wxALL, borderwidth );
 
-    pBtn = new wxButton  (this, wxID_SETUP , "Browse" );
+    pBtn = new wxButton  (this, wxID_SETUP , wxT("Browse") );
     horsizer->Add(pBtn, 0, wxALL, borderwidth );
 
 
@@ -411,10 +411,10 @@ CExportMagesCSVDlg::CExportMagesCSVDlg(wxWindow * parent, const char * fname)
 
     horsizer = new wxBoxSizer( wxHORIZONTAL );
 
-    pBtn = new wxButton  (this, wxID_OK    , "Ok" );
+    pBtn = new wxButton  (this, wxID_OK    , wxT("Ok") );
     horsizer->Add(pBtn, 0, wxALL, borderwidth );
 
-    pBtn = new wxButton  (this, wxID_CANCEL    , "Cancel" );
+    pBtn = new wxButton  (this, wxID_CANCEL    , wxT("Cancel") );
     horsizer->Add(pBtn, 0, wxALL, borderwidth );
 
     topsizer->Add( horsizer, 0, wxALIGN_CENTER | wxALL | wxGROW  );
@@ -438,9 +438,9 @@ void CExportMagesCSVDlg::OnButton(wxCommandEvent& event)
     {
     case wxID_OK:
         S = m_pSeparator->GetValue();
-        gpApp->SetConfig(m_sConfigSection.GetData(), SZ_KEY_SEPARATOR, S);
+        gpApp->SetConfig(m_sConfigSection.GetData(), SZ_KEY_SEPARATOR, S.mb_str());
         S = m_pOrientation->GetValue();
-        gpApp->SetConfig(m_sConfigSection.GetData(), SZ_KEY_ORIENTATION, S);
+        gpApp->SetConfig(m_sConfigSection.GetData(), SZ_KEY_ORIENTATION, S.mb_str());
         m_nFormat = 0;
         if (m_pRadio1->GetValue())
             m_nFormat = 0;
@@ -450,7 +450,7 @@ void CExportMagesCSVDlg::OnButton(wxCommandEvent& event)
             m_nFormat = 2;
         S.Empty();
         S << m_nFormat;
-        gpApp->SetConfig(m_sConfigSection.GetData(), SZ_KEY_FORMAT, S);
+        gpApp->SetConfig(m_sConfigSection.GetData(), SZ_KEY_FORMAT, S.mb_str());
 
         StoreSize();
         EndModal(wxID_OK);
@@ -466,10 +466,10 @@ void CExportMagesCSVDlg::OnButton(wxCommandEvent& event)
             int         err;
             wxString CurrentDir = wxGetCwd();
             wxFileDialog dialog(GetParent(),
-                                "Save mages info",
-                                "",
+                                wxT("Save mages info"),
+                                wxT(""),
                                 m_pFileName->GetValue(),
-                                SZ_CSV_FILES,
+                                wxT(SZ_CSV_FILES),
                                 wxSAVE |  wxOVERWRITE_PROMPT );
             err = dialog.ShowModal();
             wxSetWorkingDirectory(CurrentDir);
@@ -502,31 +502,31 @@ CHexExportDlg::CHexExportDlg(wxWindow *parent)
     CStr         ConfigKey;
     CStr         S;
 
-    m_btnOk           = new wxButton     (this, wxID_OK    , "Ok"    );
-    m_btnCancel       = new wxButton     (this, wxID_CANCEL, "Cancel" );
-    m_btnBrowse       = new wxButton     (this, -1,          "Browse" );
-    m_tcFName         = new wxTextCtrl   (this, -1, "", wxDefaultPosition, wxSize(150, -1));
+    m_btnOk           = new wxButton     (this, wxID_OK    , wxT("Ok")    );
+    m_btnCancel       = new wxButton     (this, wxID_CANCEL, wxT("Cancel") );
+    m_btnBrowse       = new wxButton     (this, -1,          wxT("Browse") );
+    m_tcFName         = new wxTextCtrl   (this, -1, wxT(""), wxDefaultPosition, wxSize(150, -1));
 
 
 
-    m_rbHexNew        = new wxRadioButton(this, -1, "New"     , wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
-    m_rbHexCurrent    = new wxRadioButton(this, -1, "Current" , wxDefaultPosition, wxDefaultSize, 0);
-    m_rbHexSelected   = new wxRadioButton(this, -1, "Selected", wxDefaultPosition, wxDefaultSize, 0);
-    m_rbHexAll        = new wxRadioButton(this, -1, "All"     , wxDefaultPosition, wxDefaultSize, 0);
+    m_rbHexNew        = new wxRadioButton(this, -1, wxT("New")     , wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+    m_rbHexCurrent    = new wxRadioButton(this, -1, wxT("Current") , wxDefaultPosition, wxDefaultSize, 0);
+    m_rbHexSelected   = new wxRadioButton(this, -1, wxT("Selected"), wxDefaultPosition, wxDefaultSize, 0);
+    m_rbHexAll        = new wxRadioButton(this, -1, wxT("All")     , wxDefaultPosition, wxDefaultSize, 0);
 
-    m_rbFileOverwrite = new wxRadioButton(this, -1, "Overwrite it" ,wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
-    m_rbFileAppend    = new wxRadioButton(this, -1, "Append to it" , wxDefaultPosition, wxDefaultSize, 0);
+    m_rbFileOverwrite = new wxRadioButton(this, -1, wxT("Overwrite it") ,wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+    m_rbFileAppend    = new wxRadioButton(this, -1, wxT("Append to it") , wxDefaultPosition, wxDefaultSize, 0);
 
-    m_chbInclStructs  = new wxCheckBox   (this, -1, "Structures");
-    m_chbInclUnits    = new wxCheckBox   (this, -1, "Units");
-    m_chbInclResources= new wxCheckBox   (this, -1, "Resources");
-    m_chbInclTurnNoAcl= new wxCheckBox   (this, -1, "Turn No a la Atlaclient");
+    m_chbInclStructs  = new wxCheckBox   (this, -1, wxT("Structures"));
+    m_chbInclUnits    = new wxCheckBox   (this, -1, wxT("Units"));
+    m_chbInclResources= new wxCheckBox   (this, -1, wxT("Resources"));
+    m_chbInclTurnNoAcl= new wxCheckBox   (this, -1, wxT("Turn No a la Atlaclient"));
 
 
     topsizer = new wxBoxSizer( wxVERTICAL );
 
     sizer     = new wxBoxSizer( wxHORIZONTAL );
-    sizer->Add(new wxStaticText(this, -1, "Export to file"), 0, wxALIGN_LEFT | wxALL, 5);
+    sizer->Add(new wxStaticText(this, -1, wxT("Export to file")), 0, wxALIGN_LEFT | wxALL, 5);
     sizer->Add(m_tcFName  , 0, wxALIGN_CENTER | wxALL, 5);
     sizer->Add(m_btnBrowse, 0, wxALIGN_CENTER | wxALL, 5);
     topsizer->Add(sizer, 0, wxALIGN_CENTER | wxALL, 10);
@@ -535,13 +535,13 @@ CHexExportDlg::CHexExportDlg(wxWindow *parent)
 
     sizer    = new wxBoxSizer( wxHORIZONTAL );
 
-    box      = new wxStaticBox(this, -1, "If file exists:");
+    box      = new wxStaticBox(this, -1, wxT("If file exists:"));
     colsizer = new wxStaticBoxSizer(box, wxVERTICAL );
     colsizer->Add(m_rbFileOverwrite , 0, wxALIGN_LEFT | wxALL, 2);
     colsizer->Add(m_rbFileAppend    , 0, wxALIGN_LEFT | wxALL, 2);
     sizer->Add(colsizer, 0, wxALIGN_LEFT | wxALL, 5 );
 
-    box      = new wxStaticBox(this, -1, "Hex(es):");
+    box      = new wxStaticBox(this, -1, wxT("Hex(es):"));
     colsizer = new wxStaticBoxSizer(box, wxVERTICAL );
     colsizer->Add(m_rbHexNew     , 0, wxALIGN_LEFT | wxALL, 2);
     colsizer->Add(m_rbHexCurrent , 0, wxALIGN_LEFT | wxALL, 2);
@@ -549,7 +549,7 @@ CHexExportDlg::CHexExportDlg(wxWindow *parent)
     colsizer->Add(m_rbHexAll     , 0, wxALIGN_LEFT | wxALL, 2);
     sizer->Add(colsizer, 0, wxALIGN_LEFT | wxALL, 5 );
 
-    box      = new wxStaticBox(this, -1, "Include:");
+    box      = new wxStaticBox(this, -1, wxT("Include:"));
     colsizer = new wxStaticBoxSizer(box, wxVERTICAL );
     colsizer->Add(m_chbInclStructs  , 0, wxALIGN_LEFT | wxALL, 2);
     colsizer->Add(m_chbInclUnits    , 0, wxALIGN_LEFT | wxALL, 2);
@@ -593,10 +593,10 @@ void CHexExportDlg::OnButton(wxCommandEvent& event)
         int          err;
         wxString     CurrentDir = wxGetCwd();
         wxFileDialog dialog(GetParent(),
-                            "Export hexes to",
-                            "",
+                            wxT("Export hexes to"),
+                            wxT(""),
                             m_tcFName->GetValue(),
-                            SZ_ALL_FILES,
+                            wxT(SZ_ALL_FILES),
                             wxSAVE  );
         err = dialog.ShowModal();
         wxSetWorkingDirectory(CurrentDir);
@@ -627,7 +627,7 @@ END_EVENT_TABLE()
 //--------------------------------------------------------------------------
 
 CComboboxDlg::CComboboxDlg(wxWindow *parent, const char * szTitle, const char * szMessage, const char * szChoices)
-             :wxDialog(parent, -1, szTitle, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE)
+             :wxDialog(parent, -1, wxString::FromAscii(szTitle), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE)
 {
     wxBoxSizer * topsizer;
     wxBoxSizer * sizer   ;
@@ -635,14 +635,14 @@ CComboboxDlg::CComboboxDlg(wxWindow *parent, const char * szTitle, const char * 
     wxButton   * btnOk;
     wxButton   * btnCancel;
 
-    btnOk       = new wxButton     (this, wxID_OK    , "Ok"    );
-    btnCancel   = new wxButton     (this, wxID_CANCEL, "Cancel" );
-    m_cbChoices = new wxComboBox(this, -1, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN);
+    btnOk       = new wxButton     (this, wxID_OK    , wxT("Ok")    );
+    btnCancel   = new wxButton     (this, wxID_CANCEL, wxT("Cancel") );
+    m_cbChoices = new wxComboBox(this, -1, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN);
 
 
     topsizer = new wxBoxSizer( wxVERTICAL );
 
-    topsizer->Add(new wxStaticText(this, -1, szMessage), 0, wxALIGN_LEFT | wxALL, 5);
+    topsizer->Add(new wxStaticText(this, -1, wxString::FromAscii(szMessage)), 0, wxALIGN_LEFT | wxALL, 5);
     topsizer->Add(m_cbChoices                          , 0, wxALIGN_CENTER | wxALL | wxGROW, 5);
 
     sizer     = new wxBoxSizer( wxHORIZONTAL );
@@ -653,7 +653,7 @@ CComboboxDlg::CComboboxDlg(wxWindow *parent, const char * szTitle, const char * 
     while (szChoices && *szChoices)
     {
         szChoices = S.GetToken(szChoices, ',');
-        m_cbChoices->Append(S.GetData());
+        m_cbChoices->Append(wxString::FromAscii(S.GetData()));
     }
 
     SetAutoLayout( TRUE );     // tell dialog to use sizer
@@ -672,7 +672,7 @@ CComboboxDlg::CComboboxDlg(wxWindow *parent, const char * szTitle, const char * 
 
 void CComboboxDlg::OnButton(wxCommandEvent& event)
 {
-    m_Choice = m_cbChoices->GetValue();
+    m_Choice = m_cbChoices->GetValue().mb_str();
     event.Skip();
 }
 
@@ -694,14 +694,14 @@ CGetTextDlg::CGetTextDlg(wxWindow *parent, const char * szTitle, const char * sz
     wxButton   * btnOk;
     wxButton   * btnCancel;
 
-    btnOk       = new wxButton     (this, wxID_OK    , "Ok"    );
-    btnCancel   = new wxButton     (this, wxID_CANCEL, "Cancel" );
-    m_tcText    = new wxTextCtrl(this, -1, "", wxDefaultPosition, wxSize(60,60), wxTE_MULTILINE | wxHSCROLL );
+    btnOk       = new wxButton     (this, wxID_OK    , wxT("Ok")    );
+    btnCancel   = new wxButton     (this, wxID_CANCEL, wxT("Cancel") );
+    m_tcText    = new wxTextCtrl(this, -1, wxT(""), wxDefaultPosition, wxSize(60,60), wxTE_MULTILINE | wxHSCROLL );
 
 
     topsizer = new wxBoxSizer( wxVERTICAL );
 
-    topsizer->Add(new wxStaticText(this, -1, szMessage), 0, wxALIGN_LEFT | wxALL, 5);
+    topsizer->Add(new wxStaticText(this, -1, wxString::FromAscii(szMessage)), 0, wxALIGN_LEFT | wxALL, 5);
     topsizer->Add(m_tcText                             , 1, wxALIGN_CENTER | wxALL | wxGROW, 5);
 
     sizer     = new wxBoxSizer( wxHORIZONTAL );
@@ -726,7 +726,7 @@ CGetTextDlg::CGetTextDlg(wxWindow *parent, const char * szTitle, const char * sz
 
 void CGetTextDlg::OnButton(wxCommandEvent& event)
 {
-    m_Text = m_tcText->GetValue();
+    m_Text = m_tcText->GetValue().mb_str();
     StoreSize();
     event.Skip();
 }
@@ -743,18 +743,18 @@ public:
 
 
 CMessageBoxSwitchableDlg::CMessageBoxSwitchableDlg(wxWindow *parent, const char * szTitle, const char * szMessage)
-                         :wxDialog(parent, -1, szTitle, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE)
+                         :wxDialog(parent, -1, wxString::FromAscii(szTitle), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE)
 {
     wxBoxSizer * topsizer;
     CStr         S;
     wxButton   * btnOk;
 
-    btnOk          = new wxButton     (this, wxID_OK    , "Ok"    );
-    m_chbSwitchOff = new wxCheckBox   (this, -1, "Do not show this again");
+    btnOk          = new wxButton     (this, wxID_OK    , wxT("Ok")    );
+    m_chbSwitchOff = new wxCheckBox   (this, -1, wxT("Do not show this again"));
 
     topsizer = new wxBoxSizer( wxVERTICAL );
 
-    topsizer->Add(new wxStaticText(this, -1, szMessage), 0, wxALIGN_LEFT | wxALL, 5);
+    topsizer->Add(new wxStaticText(this, -1, wxString::FromAscii(szMessage)), 0, wxALIGN_LEFT | wxALL, 5);
     topsizer->Add(m_chbSwitchOff                       , 0, wxALIGN_LEFT | wxALL | wxGROW, 5);
     topsizer->Add(btnOk, 0, wxALIGN_CENTER | wxALL, 10);
 

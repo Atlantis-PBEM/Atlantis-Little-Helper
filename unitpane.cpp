@@ -431,21 +431,21 @@ void CUnitPane::OnIdle(wxIdleEvent& event)
         p = (CListLayoutItem*)m_pLayout->At(col);
         if (p)
         {
-            wxString choice, message=p->m_Caption, caption="Set sort order";
+            wxString choice, message=wxString::FromAscii(p->m_Caption), caption=wxT("Set sort order");
             wxString choices[NUM_SORTS-1];
 
-            choices[0]="primary";
-            choices[1]="secondary";
-            choices[2]="tertiary";
+            choices[0]=wxT("primary");
+            choices[1]=wxT("secondary");
+            choices[2]=wxT("tertiary");
 
             choice = wxGetSingleChoice(message, caption, NUM_SORTS-1, choices, m_pParent);
 
             if (!choice.IsEmpty())
             {
                 int key;
-                if (0==stricmp(choice, "primary"))
+                if (0==stricmp(choice.mb_str(), "primary"))
                     key = 0;
-                else if (0==stricmp(choice, "secondary"))
+                else if (0==stricmp(choice.mb_str(), "secondary"))
                     key = 1;
                 else
                     key = 2;
@@ -483,9 +483,9 @@ void CUnitPane::OnRClick(wxListEvent& event)
     if (nItems>1)
     {
         // multiple units
-        menu.Append(menu_Popup_IssueOrders     , "Issue orders");
-        menu.Append(menu_Popup_UnitFlags       , "Set custom flags"    );
-        menu.Append(menu_Popup_AddToTracking   , "Add to a tracking group");
+        menu.Append(menu_Popup_IssueOrders     , wxT("Issue orders"));
+        menu.Append(menu_Popup_UnitFlags       , wxT("Set custom flags")    );
+        menu.Append(menu_Popup_AddToTracking   , wxT("Add to a tracking group"));
 
         PopupMenu( &menu, event.GetPoint().x, y);
     }
@@ -495,16 +495,16 @@ void CUnitPane::OnRClick(wxListEvent& event)
             // single unit
             if (pUnit->IsOurs)
             {
-                menu.Append(menu_Popup_ShareSilv     , "Share SILV"        );
-                menu.Append(menu_Popup_Teach         , "Teach"             );
-                menu.Append(menu_Popup_Split         , "Split"             );
-                menu.Append(menu_Popup_DiscardJunk   , "Discard junk items");
-                menu.Append(menu_Popup_GiveEverything, "Give everything"   );
-                menu.Append(menu_Popup_DetectSpies   , "Detect spies"      );
+                menu.Append(menu_Popup_ShareSilv     , wxT("Share SILV")        );
+                menu.Append(menu_Popup_Teach         , wxT("Teach")             );
+                menu.Append(menu_Popup_Split         , wxT("Split")             );
+                menu.Append(menu_Popup_DiscardJunk   , wxT("Discard junk items"));
+                menu.Append(menu_Popup_GiveEverything, wxT("Give everything")   );
+                menu.Append(menu_Popup_DetectSpies   , wxT("Detect spies")      );
             }
 
-            menu.Append(menu_Popup_UnitFlags       , "Set custom flags"    );
-            menu.Append(menu_Popup_AddToTracking   , "Add to a tracking group");
+            menu.Append(menu_Popup_UnitFlags       , wxT("Set custom flags")    );
+            menu.Append(menu_Popup_AddToTracking   , wxT("Add to a tracking group"));
 
 
             PopupMenu( &menu, event.GetPoint().x, y);
@@ -603,9 +603,9 @@ void CUnitPane::OnPopupMenuGiveEverything (wxCommandEvent& event)
         if (m_pCurLand)
             m_pCurLand->guiUnit = pUnit->Id;
 
-        N = wxGetTextFromUser("Give everything to unit", "Confirm");
+        N = wxGetTextFromUser(wxT("Give everything to unit"), wxT("Confirm"));
 
-        gpApp->SetOrdersChanged(gpApp->m_pAtlantis->GenGiveEverything(pUnit, N)
+        gpApp->SetOrdersChanged(gpApp->m_pAtlantis->GenGiveEverything(pUnit, N.mb_str())
                                || gpApp->GetOrdersChanged());
         Update(m_pCurLand);
     }
@@ -648,7 +648,7 @@ void CUnitPane::OnPopupMenuDetectSpies(wxCommandEvent& WXUNUSED(event))
     {
         DoCheck = atol(gpApp->GetConfig(SZ_SECT_COMMON, SZ_KEY_SPY_DETECT_WARNING));
         if (DoCheck &&
-            wxYES != wxMessageBox("Really generate orders for spy detection?  It might freeze the program on Linux!", "Confirm", wxYES_NO, NULL))
+            wxYES != wxMessageBox(wxT("Really generate orders for spy detection?  It might freeze the program on Linux!"), wxT("Confirm"), wxYES_NO, NULL))
             return;
 
         pOrders = (CEditPane*)gpApp->m_Panes[AH_PANE_UNIT_COMMANDS];
@@ -715,7 +715,7 @@ void CUnitPane::OnPopupMenuAddUnitToTracking (wxCommandEvent& WXUNUSED(event))
                     }
                 }
                 if (found)
-                    wxMessageBox("The unit is already in the group.");
+                    wxMessageBox(wxT("The unit is already in the group."));
                 else
                 {
                     S = gpApp->GetConfig(SZ_SECT_UNIT_TRACKING, dlg.m_Choice.GetData());

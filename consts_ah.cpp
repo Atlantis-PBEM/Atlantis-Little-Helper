@@ -57,7 +57,7 @@ DefaultConfigRec DefaultConfig[] =
 //    {SZ_SECT_COMMON            ,     SZ_KEY_MAX_SKILL_DAYS ,     "450"               },
     {SZ_SECT_COMMON            ,     SZ_KEY_CHECK_OUTPUT_LIST,   "1"                 },
     {SZ_SECT_COMMON            ,     SZ_KEY_PWD_READ       ,     "1"                 },
-    {SZ_SECT_COMMON            ,     SZ_KEY_VALID_ORDERS   ,     "address,advance,armor,assassinate,attack,autotax,avoid,behind,build,buy,cast,claim,combat,consume,declare,describe,destroy,end,endturn,enter,entertain,evict,exchange,faction,fightas,find,forget,form,give,giveif,guard,hold,leave,master,move,name,noaid,nocross,nospoils,option,password,pillage,prepare,produce,promote,quit,restart,reveal,sail,sell,show,spoils,steal,study,tax,teach,turn,weapon,withdraw,work"     },
+    {SZ_SECT_COMMON            ,     SZ_KEY_VALID_ORDERS   ,     "address,advance,armor,assassinate,attack,autotax,avoid,behind,build,buy,cast,claim,combat,consume,declare,describe,destroy,end,endturn,enter,entertain,evict,exchange,faction,fightas,find,forget,form,give,giveif,guard,hold,leave,master,move,name,noaid,nocross,nospoils,option,password,pillage,prepare,produce,promote,quit,restart,reveal,sail,sell,show,spoils,steal,study,take,tax,teach,turn,weapon,withdraw,work"     },
     {SZ_SECT_COMMON            ,     SZ_KEY_LEAD_SKILL_BONUS,    "2,4"               },
     {SZ_SECT_COMMON            ,     SZ_KEY_CHECK_MOVE_MODE,     "1"                 },
     {SZ_SECT_COMMON            ,     SZ_KEY_TAX_PER_TAXER  ,     "50"                },

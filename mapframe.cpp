@@ -193,87 +193,87 @@ void CMapFrame::MakeMenu(int layout)
 
     menuBar = new wxMenuBar();
 
-    menuItem = new wxMenu("", wxMENU_TEAROFF);
-    menuItem->Append(menu_LoadReport        , "Load Report"                 , "" );
-    menuItem->Append(menu_JoinReport        , "Join Report"                 , "" );
-    menuItem->Append(menu_LoadOrders        , "Load Orders"                 , "" );
+    menuItem = new wxMenu(wxT(""), wxMENU_TEAROFF);
+    menuItem->Append(menu_LoadReport        , wxT("Load Report")                 , wxT("") );
+    menuItem->Append(menu_JoinReport        , wxT("Join Report")                 , wxT("") );
+    menuItem->Append(menu_LoadOrders        , wxT("Load Orders")                 , wxT("") );
     menuItem->AppendSeparator();
-    menuItem->Append(menu_SaveOrders        , "Save Orders\tCtrl-S"         , "" );
-    menuItem->Append(menu_SaveOrdersAs      , "Save Orders As"              , "" );
+    menuItem->Append(menu_SaveOrders        , wxT("Save Orders\tCtrl-S")         , wxT("") );
+    menuItem->Append(menu_SaveOrdersAs      , wxT("Save Orders As")              , wxT("") );
     menuItem->AppendSeparator();
-    menuItem->Append(menu_Quit              , "Exit\tAlt-X"                 , "" );
-    menuItem->Append(menu_QuitNoSave        , "Quit and Discard Changes"    , "" );
-    menuBar->Append(menuItem, "&File");
+    menuItem->Append(menu_Quit              , wxT("Exit\tAlt-X")                 , wxT("") );
+    menuItem->Append(menu_QuitNoSave        , wxT("Quit and Discard Changes")    , wxT("") );
+    menuBar->Append(menuItem, wxT("&File"));
 
     menuItem = new wxMenu;
-    menuItem->Append(menu_ViewFactionInfo   , "Faction Info"                , "" );
-    menuItem->Append(menu_ViewFactionOverview, "Faction Overview"           , "" );
+    menuItem->Append(menu_ViewFactionInfo   , wxT("Faction Info")                , wxT("") );
+    menuItem->Append(menu_ViewFactionOverview, wxT("Faction Overview")           , wxT("") );
     menuItem->AppendSeparator();
-    menuItem->Append(menu_ViewSkillsAll     , "All Skills"                  , "" );
-    menuItem->Append(menu_ViewSkillsNew     , "New Skills"                  , "" );
-    menuItem->Append(menu_ViewItemsAll      , "All Items"                   , "" );
-    menuItem->Append(menu_ViewItemsNew      , "New Items"                   , "" );
-    menuItem->Append(menu_ViewObjectsAll    , "All Objects"                 , "" );
-    menuItem->Append(menu_ViewObjectsNew    , "New Objects"                 , "" );
-    menuItem->Append(menu_ViewBattlesAll    , "All Battles"                 , "" );
+    menuItem->Append(menu_ViewSkillsAll     , wxT("All Skills")                  , wxT("") );
+    menuItem->Append(menu_ViewSkillsNew     , wxT("New Skills")                  , wxT("") );
+    menuItem->Append(menu_ViewItemsAll      , wxT("All Items")                   , wxT("") );
+    menuItem->Append(menu_ViewItemsNew      , wxT("New Items")                   , wxT("") );
+    menuItem->Append(menu_ViewObjectsAll    , wxT("All Objects")                 , wxT("") );
+    menuItem->Append(menu_ViewObjectsNew    , wxT("New Objects")                 , wxT("") );
+    menuItem->Append(menu_ViewBattlesAll    , wxT("All Battles")                 , wxT("") );
     menuItem->AppendSeparator();
-    menuItem->Append(menu_ViewGates         , "Gates"                       , "" );
-    menuItem->Append(menu_ViewCities        , "Cities"                      , "" );
-    menuItem->Append(menu_ViewProvinces     , "Provinces"                   , "" );
-    menuItem->Append(menu_ViewNewProducts   , "New products"                , "" );
-    menuItem->Append(menu_ViewEvents        , "Non-unit Events"             , "" );
-    menuItem->Append(menu_ViewSecurityEvents, "Security Events"             , "" );
-    menuItem->Append(menu_ViewErrors        , "All Errors"                  , "" );
+    menuItem->Append(menu_ViewGates         , wxT("Gates")                       , wxT("") );
+    menuItem->Append(menu_ViewCities        , wxT("Cities")                      , wxT("") );
+    menuItem->Append(menu_ViewProvinces     , wxT("Provinces")                   , wxT("") );
+    menuItem->Append(menu_ViewNewProducts   , wxT("New products")                , wxT("") );
+    menuItem->Append(menu_ViewEvents        , wxT("Non-unit Events")             , wxT("") );
+    menuItem->Append(menu_ViewSecurityEvents, wxT("Security Events")             , wxT("") );
+    menuItem->Append(menu_ViewErrors        , wxT("All Errors")                  , wxT("") );
     menuItem->AppendSeparator();
-    menuItem->Append(menu_Options           , "Options"                     , "" );
-    menuBar->Append(menuItem, "&View");
+    menuItem->Append(menu_Options           , wxT("Options")                     , wxT("") );
+    menuBar->Append(menuItem, wxT("&View"));
 
 
     menuItem = new wxMenu;
-    menuItem->Append(menu_ApplyDefaultOrders, "Apply default orders"          , "");
-    menuItem->Append(menu_RerunOrders       , "Rerun orders"                  , "");
-    menuItem->Append(menu_CheckMonthLongOrd , "Check month long orders"       , "");
-    menuItem->Append(menu_CheckTaxTrade     , "Check tax, trade for next turn", "");
-    menuItem->Append(menu_CheckProduction   , "Check production requirements" , "");
-    menuItem->Append(menu_CheckSailing      , "Check sailing"                 , "");
-    //menuItem->Append(menu_FindHexes         , "Find hexes"                    , "");
-    menuItem->Append(menu_FindTradeRoutes   , "Find Trade Routes"             , "");
+    menuItem->Append(menu_ApplyDefaultOrders, wxT("Apply default orders")          , wxT(""));
+    menuItem->Append(menu_RerunOrders       , wxT("Rerun orders")                  , wxT(""));
+    menuItem->Append(menu_CheckMonthLongOrd , wxT("Check month long orders")       , wxT(""));
+    menuItem->Append(menu_CheckTaxTrade     , wxT("Check tax, trade for next turn"), wxT(""));
+    menuItem->Append(menu_CheckProduction   , wxT("Check production requirements") , wxT(""));
+    menuItem->Append(menu_CheckSailing      , wxT("Check sailing")                 , wxT(""));
+    //menuItem->Append(menu_FindHexes         , wxT("Find hexes")                    , wxT(""));
+    menuItem->Append(menu_FindTradeRoutes   , wxT("Find Trade Routes")             , wxT(""));
 
 
     menuItem->AppendSeparator();
-    menuItem->Append(menu_WriteMagesCSV     , "Export mages data to CSV file" , "");
-    menuItem->Append(menu_ExportHexes       , "Export Hexes"                  , "");
+    menuItem->Append(menu_WriteMagesCSV     , wxT("Export mages data to CSV file") , wxT(""));
+    menuItem->Append(menu_ExportHexes       , wxT("Export Hexes")                  , wxT(""));
     
     
     menuItem->AppendSeparator();
-    menuItem->Append(menu_FlagNames         , "Unit Flag Names"               , "");
-    menuItem->Append(menu_FlagsAllSet       , "Set/Clear Hex/Unit Flags"      , "");
-    menuBar->Append(menuItem, "&Actions");
+    menuItem->Append(menu_FlagNames         , wxT("Unit Flag Names")               , wxT(""));
+    menuItem->Append(menu_FlagsAllSet       , wxT("Set/Clear Hex/Unit Flags")      , wxT(""));
+    menuBar->Append(menuItem, wxT("&Actions"));
 
 
 
     menuItem = new wxMenu;
     if (AH_LAYOUT_3_WIN==layout || AH_LAYOUT_2_WIN==layout)
-        menuItem->Append(menu_WindowUnits   , "Units (Hex)"                 , "");
-    menuItem->Append(menu_WindowUnitsFltr   , "Unit Locator"                , "");
-    menuItem->Append(menu_WindowMessages    , "Messages"                    , "");
+        menuItem->Append(menu_WindowUnits   , wxT("Units (Hex)")                 , wxT(""));
+    menuItem->Append(menu_WindowUnitsFltr   , wxT("Unit Locator")                , wxT(""));
+    menuItem->Append(menu_WindowMessages    , wxT("Messages")                    , wxT(""));
     if (AH_LAYOUT_3_WIN==layout)
-        menuItem->Append(menu_WindowEditors , "Editors"                     , "");
+        menuItem->Append(menu_WindowEditors , wxT("Editors")                     , wxT(""));
 
 //    menuSubItem = new wxMenu;
-//    menuSubItem->Append(menu_ListColUnits    , "Units (Hex)"                 , "");
-//    menuSubItem->Append(menu_ListColUnitsFltr, "Unit Locator"                , "");
-//    menuItem->   Append(menu_ListColumns     , "List columns", menuSubItem   , "");
+//    menuSubItem->Append(menu_ListColUnits    , wxT("Units (Hex)")                 , wxT(""));
+//    menuSubItem->Append(menu_ListColUnitsFltr, wxT("Unit Locator")                , wxT(""));
+//    menuItem->   Append(menu_ListColumns     , wxT("List columns"), menuSubItem   , wxT(""));
     menuItem->AppendSeparator();
-    menuItem->Append(menu_ListColUnits      , "Columns for Units (Hex)"     , "");
-    menuItem->Append(menu_ListColUnitsFltr  , "Columns for Unit Locator"    , "");
+    menuItem->Append(menu_ListColUnits      , wxT("Columns for Units (Hex)")     , wxT(""));
+    menuItem->Append(menu_ListColUnitsFltr  , wxT("Columns for Unit Locator")    , wxT(""));
 
-    menuBar->Append(menuItem, "&Windows");
+    menuBar->Append(menuItem, wxT("&Windows"));
 
 
     menuItem = new wxMenu;
-    menuItem->Append(menu_About             , "About"                       , "");
-    menuBar->Append(menuItem, "&Help");
+    menuItem->Append(menu_About             , wxT("About")                       , wxT(""));
+    menuBar->Append(menuItem, wxT("&Help"));
 
     SetMenuBar(menuBar);
 }
@@ -286,24 +286,24 @@ void CMapFrame::MakeToolBar()
 
     wxToolBar  * toolBar;
     wxBitmap     toolBarBitmap[TOOLCOUNT];
-    const char * toolTip      [TOOLCOUNT];
+    wxString     toolTip      [TOOLCOUNT];
     int          i;
 
 
     // if changing order, change tool_xxx constants in consts_ah.h accordingly
-    toolBarBitmap[ 0] = wxBITMAP(zoomin         );     toolTip[ 0] = "Zoom In"            ;
-    toolBarBitmap[ 1] = wxBITMAP(zoomout        );     toolTip[ 1] = "Zoom Out"           ;
-    toolBarBitmap[ 2] = wxBITMAP(centerout      );     toolTip[ 2] = "Zoom Out and Center";
-    toolBarBitmap[ 3] = wxBITMAP(prevzoom       );     toolTip[ 3] = "Prev Zoom Level"    ;
-    toolBarBitmap[ 4] = wxBITMAP(showcoord      );     toolTip[ 4] = "Coordinates"        ;
-    toolBarBitmap[ 5] = wxBITMAP(shownames      );     toolTip[ 5] = "Town Names"         ;
-    toolBarBitmap[ 6] = wxBITMAP(planeup        );     toolTip[ 6] = "Plane Up"           ;
-    toolBarBitmap[ 7] = wxBITMAP(planedwn       );     toolTip[ 7] = "Plane Down"         ;
-    toolBarBitmap[ 8] = wxBITMAP(lastvisitturn  );     toolTip[ 8] = "Last Turn Visited"  ;
-    toolBarBitmap[ 9] = wxBITMAP(prevturn       );     toolTip[ 9] = "Prev Turn"          ;
-    toolBarBitmap[10] = wxBITMAP(nextturn       );     toolTip[10] = "Next Turn"          ;
-    toolBarBitmap[11] = wxBITMAP(lastturn       );     toolTip[11] = "Last Turn"          ;
-    toolBarBitmap[12] = wxBITMAP(findhex        );     toolTip[12] = "Find Hexes"         ;
+    toolBarBitmap[ 0] = wxBITMAP(zoomin         );     toolTip[ 0] = wxT("Zoom In")            ;
+    toolBarBitmap[ 1] = wxBITMAP(zoomout        );     toolTip[ 1] = wxT("Zoom Out")           ;
+    toolBarBitmap[ 2] = wxBITMAP(centerout      );     toolTip[ 2] = wxT("Zoom Out and Center");
+    toolBarBitmap[ 3] = wxBITMAP(prevzoom       );     toolTip[ 3] = wxT("Prev Zoom Level")    ;
+    toolBarBitmap[ 4] = wxBITMAP(showcoord      );     toolTip[ 4] = wxT("Coordinates")        ;
+    toolBarBitmap[ 5] = wxBITMAP(shownames      );     toolTip[ 5] = wxT("Town Names")         ;
+    toolBarBitmap[ 6] = wxBITMAP(planeup        );     toolTip[ 6] = wxT("Plane Up")           ;
+    toolBarBitmap[ 7] = wxBITMAP(planedwn       );     toolTip[ 7] = wxT("Plane Down")         ;
+    toolBarBitmap[ 8] = wxBITMAP(lastvisitturn  );     toolTip[ 8] = wxT("Last Turn Visited")  ;
+    toolBarBitmap[ 9] = wxBITMAP(prevturn       );     toolTip[ 9] = wxT("Prev Turn")          ;
+    toolBarBitmap[10] = wxBITMAP(nextturn       );     toolTip[10] = wxT("Next Turn")          ;
+    toolBarBitmap[11] = wxBITMAP(lastturn       );     toolTip[11] = wxT("Last Turn")          ;
+    toolBarBitmap[12] = wxBITMAP(findhex        );     toolTip[12] = wxT("Find Hexes")         ;
 
     toolBar = CreateToolBar(wxNO_BORDER | wxTB_FLAT | wxTB_VERTICAL);
 
@@ -516,15 +516,15 @@ void CMapFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
     sPyVersion = "Python is not supported";
 #endif
 
-    msg.Printf("Atlantis Little Helper version %s, build %d.\n\n%s.\n\n%s.\n\n"
-               "Please read doc/readme.html for more information.",
+    msg.Printf(wxT("Atlantis Little Helper version %s, build %d.\n\n%s.\n\n%s.\n\n"
+               "Please read doc/readme.html for more information."),
                AH_VERSION,
                AH_BuildNumber,
                wxVERSION_STRING,
                sPyVersion.GetData() );
 
 
-    wxMessageBox(msg, "About", wxOK | wxICON_INFORMATION, this);
+    wxMessageBox(msg, wxT("About"), wxOK | wxICON_INFORMATION, this);
 }
 
 //--------------------------------------------------------------------
@@ -658,7 +658,7 @@ void CMapFrame::OnCloseWindow(wxCloseEvent& event)
         Destroy();
     }
     else
-        wxMessageBox("Can not save orders or save cancelled.");
+        wxMessageBox(wxT("Can not save orders or save cancelled."));
 }
 
 //--------------------------------------------------------------------

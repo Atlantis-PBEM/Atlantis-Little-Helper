@@ -84,19 +84,19 @@ CUnitFilterDlg::CUnitFilterDlg(wxWindow *parent, const char * szConfigSection)
 
     topsizer = new wxBoxSizer( wxVERTICAL );
 
-    m_btnSet        = new wxButton     (this, wxID_OK     , "Set"    );
-    m_btnRemove     = new wxButton     (this, wxID_NO     , "Clear"  );
-    m_btnCancel     = new wxButton     (this, wxID_CANCEL , "Cancel" );
-    m_btnTracking   = new wxButton     (this, ID_BTN_TRACK, "Tracking" );
-    m_btnGone       = new wxButton     (this, ID_BTN_GONE , "Disappeared" );
-    m_btnHelp       = new wxButton     (this, ID_BTN_HELP , "Help" );
+    m_btnSet        = new wxButton     (this, wxID_OK     , wxT("Set")    );
+    m_btnRemove     = new wxButton     (this, wxID_NO     , wxT("Clear")  );
+    m_btnCancel     = new wxButton     (this, wxID_CANCEL , wxT("Cancel") );
+    m_btnTracking   = new wxButton     (this, ID_BTN_TRACK, wxT("Tracking") );
+    m_btnGone       = new wxButton     (this, ID_BTN_GONE , wxT("Disappeared") );
+    m_btnHelp       = new wxButton     (this, ID_BTN_HELP , wxT("Help") );
     m_cbSetName     = new wxComboBox   (this, ID_CB_SET_NAME);
-    m_rbUseBoxes    = new wxRadioButton(this, -1, "Boxes");
-    m_rbUsePython   = new wxRadioButton(this, -1, "Python" );
-    m_tcFilterText  = new wxTextCtrl   (this, ID_TC_TEXT, "", wxDefaultPosition, wxSize(100,50), wxTE_MULTILINE | wxTE_AUTO_SCROLL );
-    m_chDisplayOnMap= new wxCheckBox(this, -1, "Mark results on the map");
-    m_chUseSelectedHexes = new wxCheckBox(this, -1, "In the selected hexes only");
-    stSetName       = new wxStaticText (this, -1, "Filter name:");
+    m_rbUseBoxes    = new wxRadioButton(this, -1, wxT("Boxes"));
+    m_rbUsePython   = new wxRadioButton(this, -1, wxT("Python") );
+    m_tcFilterText  = new wxTextCtrl   (this, ID_TC_TEXT, wxT(""), wxDefaultPosition, wxSize(100,50), wxTE_MULTILINE | wxTE_AUTO_SCROLL );
+    m_chDisplayOnMap= new wxCheckBox(this, -1, wxT("Mark results on the map"));
+    m_chUseSelectedHexes = new wxCheckBox(this, -1, wxT("In the selected hexes only"));
+    stSetName       = new wxStaticText (this, -1, wxT("Filter name:"));
 
     if (!pMapPane->HaveSelection())
         m_chUseSelectedHexes->Enable(FALSE);
@@ -121,7 +121,7 @@ CUnitFilterDlg::CUnitFilterDlg(wxWindow *parent, const char * szConfigSection)
         m_tcValue   [count] = new wxTextCtrl(this, -1);
 
         if (count>0)
-            rowsizer->Add(new wxStaticText(this, -1, "AND"), 0, wxALIGN_LEFT | wxLEFT, SPACER_GENERIC );
+            rowsizer->Add(new wxStaticText(this, -1, wxT("AND")), 0, wxALIGN_LEFT | wxLEFT, SPACER_GENERIC );
 
         sizer    = new wxBoxSizer( wxHORIZONTAL );
         sizer->Add(m_cbProperty[count], 0, wxALIGN_CENTER | wxALL, SPACER_GENERIC);
@@ -202,14 +202,14 @@ void CUnitFilterDlg::LoadSetCombo(const char * setselect)
     {
         if (0!=strnicmp(setsection, SZ_SECT_UNIT_FILTER, setnameoffs))
             break;
-        m_cbSetName->Append(&setsection[setnameoffs]);
+        m_cbSetName->Append(wxString::FromAscii(&setsection[setnameoffs]));
         if (0==stricmp(setsection, setselect))
             x = i;
         i++;
         setsection = gpApp->GetNextSectionName(CONFIG_FILE_CONFIG, setsection);
     }
     if (0==i)
-        m_cbSetName->Append(&setselect[setnameoffs]);
+        m_cbSetName->Append(wxString::FromAscii(&setselect[setnameoffs]));
     m_cbSetName->SetSelection(x);
 
     m_IsSaving = FALSE;
@@ -228,8 +228,8 @@ void CUnitFilterDlg::Init()
     skilllen    = strlen(PRP_SKILL_POSTFIX);
     for (count=0; count < UNIT_SIMPLE_FLTR_COUNT; count++)
     {
-        m_cbProperty[count]->Append("");
-        m_cbCompare [count]->Append("");
+        m_cbProperty[count]->Append(wxT(""));
+        m_cbCompare [count]->Append(wxT(""));
 
         for (i=0; i<gpApp->m_pAtlantis->m_UnitPropertyNames.Count(); i++)
         {
@@ -240,14 +240,14 @@ void CUnitFilterDlg::Init()
             if (!IsASkillRelatedProperty(S.GetData()) ||
                 S.FindSubStrR(PRP_SKILL_POSTFIX) == S.GetLength()-skilllen)
             {
-                 m_cbProperty[count]->Append(item);
+                 m_cbProperty[count]->Append(wxString::FromAscii(item));
             }
         }
 
         for (i=0; (unsigned)i<sizeof(UNIT_FILTER_OPERATION)/sizeof(*UNIT_FILTER_OPERATION); i++)
         {
             item = UNIT_FILTER_OPERATION[i];
-            m_cbCompare[count]->Append(item);
+            m_cbCompare[count]->Append(wxString::FromAscii(item));
         }
     }
 }
@@ -271,7 +271,7 @@ void CUnitFilterDlg::Load(const char * szConfigSection)
         selvalue = gpApp->GetConfig(szConfigSection, ConfigKey.GetData());
         selidx   = 0;
         for (i=0; i<(int)m_cbProperty[count]->GetCount(); i++)
-            if (0==stricmp(m_cbProperty[count]->GetString(i), selvalue))
+            if (0==stricmp(m_cbProperty[count]->GetString(i).mb_str(), selvalue))
             {
                 selidx = i;
                 break;
@@ -279,11 +279,11 @@ void CUnitFilterDlg::Load(const char * szConfigSection)
         m_cbProperty[count]->SetSelection(selidx);
 
         ConfigKey.Format("%s%d", SZ_KEY_UNIT_FLTR_COMPARE , count);
-        m_cbCompare [count]->SetValue(gpApp->GetConfig(szConfigSection, ConfigKey.GetData()));
+        m_cbCompare [count]->SetValue(wxString::FromAscii(gpApp->GetConfig(szConfigSection, ConfigKey.GetData())));
         selvalue = gpApp->GetConfig(szConfigSection, ConfigKey.GetData());
         selidx   = 0;
         for (i=0; i<(int)m_cbCompare[count]->GetCount(); i++)
-            if (0==stricmp(m_cbCompare[count]->GetString(i), selvalue))
+            if (0==stricmp(m_cbCompare[count]->GetString(i).mb_str(), selvalue))
             {
                 selidx = i;
                 break;
@@ -291,10 +291,10 @@ void CUnitFilterDlg::Load(const char * szConfigSection)
         m_cbCompare[count]->SetSelection(selidx);
 
         ConfigKey.Format("%s%d", SZ_KEY_UNIT_FLTR_VALUE   , count);
-        m_tcValue   [count]->SetValue(SkipSpaces(gpApp->GetConfig(szConfigSection, ConfigKey.GetData())) );
+        m_tcValue   [count]->SetValue(wxString::FromAscii(SkipSpaces(gpApp->GetConfig(szConfigSection, ConfigKey.GetData())) ));
     }
 
-    m_tcFilterText->SetValue(gpApp->GetConfig(szConfigSection, SZ_KEY_UNIT_FLTR_PYTHON_CODE));
+    m_tcFilterText->SetValue(wxString::FromAscii(gpApp->GetConfig(szConfigSection, SZ_KEY_UNIT_FLTR_PYTHON_CODE)));
 
     S = gpApp->GetConfig(szConfigSection, SZ_KEY_UNIT_FLTR_SOURCE);
     if (0==stricmp(S.GetData(), SZ_KEY_UNIT_FLTR_SOURCE_PYTHON))
@@ -328,14 +328,14 @@ BOOL CUnitFilterDlg::IsValid()
     if (m_rbUseBoxes->GetValue())
         for (count=0; count < UNIT_SIMPLE_FLTR_COUNT; count++)
         {
-            S1 = m_cbProperty[count]->GetValue();   S1.TrimRight(TRIM_ALL);
-            S2 = m_cbCompare[count]->GetValue();    S2.TrimRight(TRIM_ALL);
+            S1 = m_cbProperty[count]->GetValue().mb_str();   S1.TrimRight(TRIM_ALL);
+            S2 = m_cbCompare[count]->GetValue().mb_str();    S2.TrimRight(TRIM_ALL);
             if (!S1.IsEmpty() && !S2.IsEmpty())
                 isvalid = TRUE;
         }
     else
     {
-        S1 = m_tcFilterText->GetValue();
+        S1 = m_tcFilterText->GetValue().mb_str();
         if (!S1.IsEmpty() )
             isvalid = TRUE;
     }
@@ -362,28 +362,28 @@ void CUnitFilterDlg::Save()
         SetName.DelSubStr(0, strlen(SZ_SECT_UNIT_FILTER));
 
         for (count=0; count<(int)m_cbSetName->GetCount(); count++)
-            if (0==stricmp(m_cbSetName->GetString(count), SetName.GetData()))
+            if (0==stricmp(m_cbSetName->GetString(count).mb_str(), SetName.GetData()))
             {
                 found = TRUE;
                 break;
             }
         if (!found)
-            m_cbSetName->Append(SetName.GetData());
+            m_cbSetName->Append(wxString::FromAscii(SetName.GetData()));
 
 
         for (count=0; count < UNIT_SIMPLE_FLTR_COUNT; count++)
         {
             ConfigKey.Format("%s%d", SZ_KEY_UNIT_FLTR_PROPERTY, count);
-            gpApp->SetConfig(m_sCurrentSection.GetData(), ConfigKey.GetData(), m_cbProperty[count]->GetValue());
+            gpApp->SetConfig(m_sCurrentSection.GetData(), ConfigKey.GetData(), m_cbProperty[count]->GetValue().mb_str());
 
             ConfigKey.Format("%s%d", SZ_KEY_UNIT_FLTR_COMPARE , count);
-            gpApp->SetConfig(m_sCurrentSection.GetData(), ConfigKey.GetData(), m_cbCompare[count]->GetValue());
+            gpApp->SetConfig(m_sCurrentSection.GetData(), ConfigKey.GetData(), m_cbCompare[count]->GetValue().mb_str());
 
             ConfigKey.Format("%s%d", SZ_KEY_UNIT_FLTR_VALUE   , count);
-            gpApp->SetConfig(m_sCurrentSection.GetData(), ConfigKey.GetData(), m_tcValue[count]->GetValue());
+            gpApp->SetConfig(m_sCurrentSection.GetData(), ConfigKey.GetData(), m_tcValue[count]->GetValue().mb_str());
         }
 
-        gpApp->SetConfig(m_sCurrentSection.GetData(), SZ_KEY_UNIT_FLTR_PYTHON_CODE, m_tcFilterText->GetValue());
+        gpApp->SetConfig(m_sCurrentSection.GetData(), SZ_KEY_UNIT_FLTR_PYTHON_CODE, m_tcFilterText->GetValue().mb_str());
         gpApp->SetConfig(m_sCurrentSection.GetData(), SZ_KEY_UNIT_FLTR_SOURCE, m_rbUsePython->GetValue() ? SZ_KEY_UNIT_FLTR_SOURCE_PYTHON : "");
 
         S = m_sSavedConfigSelected;
@@ -438,7 +438,7 @@ void CUnitFilterDlg::OnTextChange   (wxCommandEvent& event)
     if (object == m_cbSetName)
     {
         if (m_lastselect < time(NULL))
-            Reload(m_cbSetName->GetValue()); // returns the old value on windoze when value is selected
+            Reload(m_cbSetName->GetValue().mb_str()); // returns the old value on windoze when value is selected
     }
     else
         OnBoxesChange(event);
@@ -452,7 +452,7 @@ void CUnitFilterDlg::OnSelectChange (wxCommandEvent& event)
 
     if (object == m_cbSetName)
     {
-        Reload(m_cbSetName->GetString(m_cbSetName->GetSelection()));
+        Reload(m_cbSetName->GetString(m_cbSetName->GetSelection()).mb_str());
         m_lastselect = time(NULL);
     }
     else
@@ -475,9 +475,9 @@ void CUnitFilterDlg::OnBoxesChange  (wxCommandEvent& event)
 
         for (i=0; i < UNIT_SIMPLE_FLTR_COUNT; i++)
         {
-            s1 = m_cbProperty[i]->GetValue();
-            s2 = m_cbCompare [i]->GetValue();
-            s3 = m_tcValue   [i]->GetValue();
+            s1 = m_cbProperty[i]->GetValue().mb_str();
+            s2 = m_cbCompare [i]->GetValue().mb_str();
+            s3 = m_tcValue   [i]->GetValue().mb_str();
             if (!s1.IsEmpty() || !s2.IsEmpty() || !s3.IsEmpty())
             {
                 // adjust 'equal to'
@@ -510,7 +510,7 @@ void CUnitFilterDlg::OnBoxesChange  (wxCommandEvent& event)
                 s << s1 << s2 << s3;
             }
         }
-        m_tcFilterText->SetValue(s.GetData());
+        m_tcFilterText->SetValue(wxString::FromAscii(s.GetData()));
     }
 }
 
@@ -535,11 +535,11 @@ void CUnitFilterDlg::OnButton(wxCommandEvent& event)
     {
         for (i=0; i < UNIT_SIMPLE_FLTR_COUNT; i++)
         {
-            m_cbProperty[i]->SetValue("");
-            m_cbCompare [i]->SetValue("");
-            m_tcValue   [i]->SetValue("");
+            m_cbProperty[i]->SetValue(wxT(""));
+            m_cbCompare [i]->SetValue(wxT(""));
+            m_tcValue   [i]->SetValue(wxT(""));
         }
-        m_tcFilterText->SetValue("");
+        m_tcFilterText->SetValue(wxT(""));
     }
     else if (object == m_btnTracking)
     {
@@ -588,12 +588,12 @@ void CUnitFilterDlg::OnButton(wxCommandEvent& event)
     }
     else if (object == m_btnHelp)
     {
-        wxMessageBox("\n"
+        wxMessageBox(wxT("\n"
                      "- Filter names can not be modified.\n"
                      "- To add a filter type in the name for it and set conditions.\n"
                      "- To delete a filter remove conditions from it.\n"
                      "- Tracking will display a group of units. Add a unit to the group by right-cliking on the unit in the unit list.\n"
-                     "- Disappeared will show units which have moved or disappeared from the current hex or hexes in the selection since the last turn."
+                     "- Disappeared will show units which have moved or disappeared from the current hex or hexes in the selection since the last turn.")
                      );
     }
 }

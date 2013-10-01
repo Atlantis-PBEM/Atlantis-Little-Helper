@@ -65,24 +65,24 @@ CUnitSplitDlg::CUnitSplitDlg(wxWindow *parent, CUnit * pUnit)
 
     topsizer = new wxBoxSizer( wxVERTICAL );
 
-    m_btnOk         = new wxButton     (this, wxID_OK     , "Set"    );
-    m_btnCancel     = new wxButton     (this, wxID_CANCEL , "Cancel" );
-    m_spinUnitCount = new wxSpinCtrl   (this, -1, "1", wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 100000);
-    m_textNewCommand= new wxTextCtrl  (this, -1, "", wxDefaultPosition, wxSize(100,50), wxTE_MULTILINE | wxTE_AUTO_SCROLL );
+    m_btnOk         = new wxButton     (this, wxID_OK     , wxT("Set")    );
+    m_btnCancel     = new wxButton     (this, wxID_CANCEL , wxT("Cancel") );
+    m_spinUnitCount = new wxSpinCtrl   (this, -1, wxT("1"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 100000);
+    m_textNewCommand= new wxTextCtrl  (this, -1, wxT(""), wxDefaultPosition, wxSize(100,50), wxTE_MULTILINE | wxTE_AUTO_SCROLL );
 
     sizer    = new wxBoxSizer( wxHORIZONTAL );
         sizer->Add(m_spinUnitCount , 0, wxALIGN_CENTER | wxALL , SPACER_GENERIC);
-        st = new wxStaticText(this, -1, "Number of new units to form");
+        st = new wxStaticText(this, -1, wxT("Number of new units to form"));
         sizer->Add(st              , 0, wxALIGN_CENTER | wxALL , SPACER_GENERIC);
     topsizer->Add(sizer        , 0, wxALIGN_CENTER | wxALL | wxGROW, SPACER_GENERIC );
 
     sizer    = new wxBoxSizer( wxHORIZONTAL );
         sizer->Add(m_textNewCommand , 1, wxALIGN_CENTER | wxGROW | wxALL , SPACER_GENERIC);
-        st = new wxStaticText(this, -1, "Orders for each new unit");
+        st = new wxStaticText(this, -1, wxT("Orders for each new unit"));
         sizer->Add(st              , 0, wxALIGN_CENTER | wxALL , SPACER_GENERIC);
     topsizer->Add(sizer        , 1, wxALIGN_CENTER | wxALL | wxGROW, SPACER_GENERIC );
 
-    st = new wxStaticText(this, -1, "Give each new unit:");
+    st = new wxStaticText(this, -1, wxT("Give each new unit:"));
     topsizer->Add(st              , 0, wxALIGN_LEFT | wxALL , SPACER_GENERIC);
 
     cols = 2;
@@ -158,10 +158,10 @@ void CUnitSplitDlg::ScanProperties()
             0!=stricmp(PRP_FRIEND_OR_FOE, propname.GetData())
            )
         {
-            pSpin = new wxSpinCtrl   (this, -1, "1");
+            pSpin = new wxSpinCtrl   (this, -1, wxT("1"));
             pSpin->SetRange(0, 0x7fffffff);
             pSpin->SetValue(0);
-            pSpin->SetName(propname.GetData());
+            pSpin->SetName(wxString::FromAscii(propname.GetData()));
 
             m_SplitControls.AtInsert(m_SplitControls.Count(), pSpin);
         }
@@ -187,7 +187,7 @@ void CUnitSplitDlg::OnOk(wxCommandEvent& event)
         id = 1;
 
     sBoo = m_textNewCommand->GetValue();
-    p = sBoo;
+    p = sBoo.mb_str();
     while (p && *p)
     {
         p = SkipSpaces(S.GetToken(p, '\n', TRIM_ALL));
@@ -209,7 +209,7 @@ void CUnitSplitDlg::OnOk(wxCommandEvent& event)
             pSpin = (wxSpinCtrl*)m_SplitControls.At(idx);
 
             if (pSpin->GetValue() > 0)
-                m_pUnit->Orders << "GIVE NEW " << (long)(id+i) << " " << (long)pSpin->GetValue() << " " << pSpin->GetName() << EOL_SCR;
+                m_pUnit->Orders << "GIVE NEW " << (long)(id+i) << " " << (long)pSpin->GetValue() << " " << pSpin->GetName().mb_str() << EOL_SCR;
         }
     }
 

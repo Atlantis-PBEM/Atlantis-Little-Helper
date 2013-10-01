@@ -88,17 +88,17 @@ CListHeaderEditDlg::CListHeaderEditDlg(wxWindow *parent, const char * szWorkKey)
     m_IsSaving        = FALSE;
     m_lastselect      = 0;
 
-    m_btnOk           = new wxButton     (this, wxID_OK        , "Ok"    );
-    m_btnCancel       = new wxButton     (this, wxID_CANCEL    , "Cancel" );
-    btnAdd            = new wxButton     (this, ID_BTN_ADD     , ">" );
-    btnDel            = new wxButton     (this, ID_BTN_DEL     , "<" );
-    btnDelAll         = new wxButton     (this, ID_BTN_DEL_ALL , "<<" );
-    btnHelp           = new wxButton     (this, ID_BTN_HELP    , "Help" );
-    stCaption         = new wxStaticText (this, -1             , "Caption:");
-    stSetName         = new wxStaticText (this, -1             , "Current set:");
+    m_btnOk           = new wxButton     (this, wxID_OK        , wxT("Ok")    );
+    m_btnCancel       = new wxButton     (this, wxID_CANCEL    , wxT("Cancel") );
+    btnAdd            = new wxButton     (this, ID_BTN_ADD     , wxT(">") );
+    btnDel            = new wxButton     (this, ID_BTN_DEL     , wxT("<") );
+    btnDelAll         = new wxButton     (this, ID_BTN_DEL_ALL , wxT("<<") );
+    btnHelp           = new wxButton     (this, ID_BTN_HELP    , wxT("Help") );
+    stCaption         = new wxStaticText (this, -1             , wxT("Caption:"));
+    stSetName         = new wxStaticText (this, -1             , wxT("Current set:"));
     m_lstSource = new wxListCtrl(this, ID_LIST_SRC , wxDefaultPosition, wxDefaultSize, wxLC_LIST | wxSUNKEN_BORDER | wxLC_SINGLE_SEL);
     m_lstDest   = new wxListCtrl(this, ID_LIST_DEST, wxDefaultPosition, wxDefaultSize, wxLC_LIST | wxSUNKEN_BORDER | wxLC_SINGLE_SEL);
-    m_cbSetName = new wxComboBox(this, ID_CB_SET_NAME, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN);
+    m_cbSetName = new wxComboBox(this, ID_CB_SET_NAME, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN);
     m_txtCaption= new wxTextCtrl(this, ID_TXT_CAPTION);
 
     topsizer = new wxBoxSizer( wxVERTICAL );
@@ -134,7 +134,7 @@ CListHeaderEditDlg::CListHeaderEditDlg(wxWindow *parent, const char * szWorkKey)
 
     LoadSetCombo();
     LoadListSrc();
-    LoadListDest(m_cbSetName->GetValue());
+    LoadListDest(m_cbSetName->GetValue().mb_str());
 
 
     SetAutoLayout( TRUE );     // tell dialog to use sizer
@@ -172,7 +172,7 @@ void CListHeaderEditDlg::LoadSetCombo()
     {
         if (0!=strnicmp(setsection, SZ_SECT_LIST_COL_UNIT, setnameoffs))
             break;
-        m_cbSetName->Append(&setsection[setnameoffs]);
+        m_cbSetName->Append(wxString::FromAscii(&setsection[setnameoffs]));
         if (0==stricmp(setsection, setselect))
             x = i;
         i++;
@@ -193,7 +193,7 @@ void CListHeaderEditDlg::LoadListSrc()
     for (i=0; i<gpApp->m_pAtlantis->m_UnitPropertyNames.Count(); i++)
     {
         item = (const char *) gpApp->m_pAtlantis->m_UnitPropertyNames.At(i);
-        m_lstSource->InsertItem(m_lstSource->GetItemCount() , item);
+        m_lstSource->InsertItem(m_lstSource->GetItemCount() , wxString::FromAscii(item));
     }
 }
 
@@ -212,7 +212,7 @@ void CListHeaderEditDlg::LoadListDest(const char * szNewName)
         return;
 
     SaveListDest();
-    m_txtCaption->SetValue("");
+    m_txtCaption->SetValue(wxT(""));
 
 
     m_DestIdx         = -1;
@@ -240,7 +240,7 @@ void CListHeaderEditDlg::LoadListDest(const char * szNewName)
         szValue       = SkipSpaces(pField->PropName.GetToken(szValue, ','));
         szValue       = SkipSpaces(pField->Caption.GetToken(szValue, ','));
 
-        m_lstDest->InsertItem(m_lstDest->GetItemCount() , pField->PropName.GetData());
+        m_lstDest->InsertItem(m_lstDest->GetItemCount() , wxString::FromAscii(pField->PropName.GetData()));
         if (!m_Fields.Insert(pField))
             delete pField;
 
@@ -268,20 +268,20 @@ void  CListHeaderEditDlg::SaveListDest()
     ProcessCaption(m_DestIdx, m_DestIdx);
 
     for (x=0; x<(int)m_cbSetName->GetCount(); x++)
-        if (0==stricmp(m_cbSetName->GetString(x), m_SetName.GetData()))
+        if (0==stricmp(m_cbSetName->GetString(x).mb_str(), m_SetName.GetData()))
         {
             found = TRUE;
             break;
         }
     if (!found)
-        m_cbSetName->Append(m_SetName.GetData());
+        m_cbSetName->Append(wxString::FromAscii(m_SetName.GetData()));
 
     Section << SZ_SECT_LIST_COL_UNIT << m_SetName;
     gpApp->RemoveSection(Section.GetData());
 
     for (x=0; x<m_lstDest->GetItemCount(); x++)
     {
-        Dummy.PropName = m_lstDest->GetItemText(x);
+        Dummy.PropName = m_lstDest->GetItemText(x).mb_str();
         if (m_Fields.Search(&Dummy, idx))
         {
             pField = (TUnitColData *)m_Fields.At(idx);
@@ -304,7 +304,7 @@ void  CListHeaderEditDlg::AddItem()
     int            flags = 0;
 
     if (m_SourceIdx >= 0 && m_SourceIdx < m_lstSource->GetItemCount())
-        Dummy.PropName = m_lstSource->GetItemText(m_SourceIdx);
+        Dummy.PropName = m_lstSource->GetItemText(m_SourceIdx).mb_str();
     if (Dummy.PropName.IsEmpty())
         return;
 
@@ -330,9 +330,9 @@ void  CListHeaderEditDlg::AddItem()
         if (!m_Fields.Insert(pField))
             delete pField;
     }
-    m_lstDest->InsertItem(m_DestIdx+1, pField->PropName.GetData());
+    m_lstDest->InsertItem(m_DestIdx+1, wxString::FromAscii(pField->PropName.GetData()));
     m_lstDest->SetItemState(m_DestIdx+1, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
-//    m_txtCaption->SetValue(pField->Caption.GetData());
+//    m_txtCaption->SetValue(wxString::FromAscii(pField->Caption.GetData()));
     m_SetIsValid = TRUE;
 }
 
@@ -348,25 +348,25 @@ void  CListHeaderEditDlg::ProcessCaption(int oldidx, int newidx)
     // Save caption
     if (oldidx >= 0 && oldidx < m_lstDest->GetItemCount())
     {
-        Dummy.PropName = m_lstDest->GetItemText(oldidx);
+        Dummy.PropName = m_lstDest->GetItemText(oldidx).mb_str();
         if (m_Fields.Search(&Dummy, idx))
         {
             pField          = (TUnitColData *)m_Fields.At(idx);
-            pField->Caption = m_txtCaption->GetValue();
+            pField->Caption = m_txtCaption->GetValue().mb_str();
         }
     }
 
     // Load caption
     if (newidx >= 0 && newidx < m_lstDest->GetItemCount())
     {
-        Dummy.PropName = m_lstDest->GetItemText(newidx);
+        Dummy.PropName = m_lstDest->GetItemText(newidx).mb_str();
         if (m_Fields.Search(&Dummy, idx))
         {
             pField          = (TUnitColData *)m_Fields.At(idx);
             Caption         = pField->Caption.GetData();
         }
     }
-    m_txtCaption->SetValue(Caption.GetData());
+    m_txtCaption->SetValue(wxString::FromAscii(Caption.GetData()));
 }
 
 //--------------------------------------------------------------------------
@@ -418,9 +418,9 @@ void CListHeaderEditDlg::OnButton(wxCommandEvent& event)
         break;
 
     case ID_BTN_HELP:
-        wxMessageBox("- Column set names can not be modified.\n"
+        wxMessageBox(wxT("- Column set names can not be modified.\n"
                      "- To add a column set type in the name for the new set and add items.\n"
-                     "- To delete a column set remove all items from it.");
+                     "- To delete a column set remove all items from it."));
     }
 
 }
@@ -432,7 +432,7 @@ void  CListHeaderEditDlg::OnSetNameChange(wxCommandEvent& event)
     if (m_IsSaving)
         return;
     if (m_lastselect < time(NULL))
-        LoadListDest(m_cbSetName->GetValue()); // returns the old value on windoze when value is selected
+        LoadListDest(m_cbSetName->GetValue().mb_str()); // returns the old value on windoze when value is selected
 }
 
 //--------------------------------------------------------------------------
@@ -441,7 +441,7 @@ void  CListHeaderEditDlg::OnSetNameSelect(wxCommandEvent& event)
 {
     if (m_IsSaving)
         return;
-    LoadListDest(m_cbSetName->GetString(m_cbSetName->GetSelection()));
+    LoadListDest(m_cbSetName->GetString(m_cbSetName->GetSelection()).mb_str());
     m_lastselect = time(NULL);
 }
 

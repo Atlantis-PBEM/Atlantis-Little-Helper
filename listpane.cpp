@@ -90,7 +90,7 @@ void CListPane::SetSortName(unsigned short key, const char * sortname)
                 {
                     width  = GetColumnWidth(i);
                     item.m_mask = wxLIST_MASK_TEXT;
-                    item.SetText(p->m_Caption);
+                    item.SetText(wxString::FromAscii(p->m_Caption));
                     SetColumn(i, item);
                     SetColumnWidth(i, width);
                 }
@@ -113,7 +113,7 @@ void CListPane::SetSortName(unsigned short key, const char * sortname)
                     S << p->m_Caption;
                     width  = GetColumnWidth(i);
                     item.m_mask   = wxLIST_MASK_TEXT;
-                    item.SetText(S.GetData());
+                    item.SetText(wxString::FromAscii(S.GetData()));
                     SetColumn(i, item);
                     SetColumnWidth(i, width);
                 }
@@ -152,7 +152,7 @@ void CListPane::SetLayout()
         {
             p = (CListLayoutItem*)m_pLayout->At(i);
 
-            InsertColumn(i, p->m_Caption, (p->m_Flags&LIST_FLAG_ALIGN_RIGHT)?wxLIST_FORMAT_RIGHT:wxLIST_FORMAT_LEFT, p->m_Width);
+            InsertColumn(i, wxString::FromAscii(p->m_Caption), (p->m_Flags&LIST_FLAG_ALIGN_RIGHT)?wxLIST_FORMAT_RIGHT:wxLIST_FORMAT_LEFT, p->m_Width);
         }
     Refresh();
 }
@@ -195,7 +195,7 @@ void CListPane::SetData(eSelMode selmode, long seldata, BOOL FullUpdate)
                         info.m_text << (long)value;
                         break;
                     case eCharPtr:
-                        info.m_text = (const char*)value;
+                        info.m_text = wxString::FromAscii((const char*)value);
                         break;
                     default:
                         break;
