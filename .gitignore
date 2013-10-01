@@ -2,6 +2,7 @@
 config.log
 config.h
 config.status
+Makefile
 
 # Object files
 *.o

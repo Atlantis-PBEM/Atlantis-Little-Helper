@@ -25,11 +25,13 @@ OBJECTS     = collection.o cfgfile.o cstr.o files.o hash.o objs.o\
               unitfilterdlg.o unitframe.o unitframefltr.o unitpane.o \
               unitpanefltr.o unitsplitdlg.o utildlgs.o
 
-TARGET      = ah
+TARGETS     = ah
 
 
-all: $(patsubst %.o,obj/%.o,$(OBJECTS))
-	$(CXX) -s $(LDFLAGS) -o $(TARGET) $(patsubst %.o,obj/%.o,$(OBJECTS)) $(LIBS)
+all: $(TARGETS)
+
+ah: $(patsubst %.o,obj/%.o,$(OBJECTS))
+	$(CXX) -s $(LDFLAGS) -o $@ $(patsubst %.o,obj/%.o,$(OBJECTS)) $(LIBS)
 
 clean:
 	rm -f $(patsubst %.o,obj/%.o,$(OBJECTS)) $(TARGET)
