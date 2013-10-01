@@ -1,3 +1,11 @@
+# autoconf creates these ephemeral files
+config.log
+config.h
+config.status
+
+# build system
+Makefile
+
 # Object files
 *.o
 
