@@ -27,3 +27,8 @@ Makefile
 # Temporary and Backup
 *~
 *.bak
+
+#output files
+ah
+ah.stderr
+ah.stdout
