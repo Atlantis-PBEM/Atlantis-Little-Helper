@@ -40,6 +40,7 @@
 #include "unitpane.h"
 #include "unitfilterdlg.h"
 #include "unitpanefltr.h"
+#include "version.h"
 #include "flagsdlg.h"
 
 #ifdef HAVE_CONFIG_H
@@ -508,17 +509,17 @@ void CMapFrame::OnQuitNoSave(wxCommandEvent& WXUNUSED(event))
 void CMapFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
 {
     wxString msg;
-    CStr  sPyVersion;
+    wxString sPyVersion;
 
 #ifdef HAVE_PYTHON
-    sPyVersion.Format("Python %s", Py_GetVersion());
+    sPyVersion = wxString::FromUTF8(Py_GetVersion());
 #else
-    sPyVersion = "Python is not supported";
+    sPyVersion = wxT("is not supported");
 #endif
 
-    msg.Printf(wxT("Atlantis Little Helper version %s, build %d.\n\n%s.\n\n%s.\n\n"
+    msg.Printf(wxT("Atlantis Little Helper version %s, build %d.\n\n%s.\n\nPython %s.\n\n"
                "Please read doc/readme.html for more information."),
-               AH_VERSION,
+               wxT(AH_VERSION),
                AH_BuildNumber,
                wxVERSION_STRING,
                sPyVersion.GetData() );

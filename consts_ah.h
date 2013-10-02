@@ -30,10 +30,6 @@ typedef struct
 extern DefaultConfigRec DefaultConfig[];
 extern int              DefaultConfigSize;
 
-static const char AH_VERSION[] =
-#include "version_no"
-;
-
 enum
 {
     // main menu
