@@ -33,8 +33,11 @@ all: $(TARGETS)
 ah: $(patsubst %.o,obj/%.o,$(OBJECTS))
 	$(CXX) -s $(LDFLAGS) -o $@ $(patsubst %.o,obj/%.o,$(OBJECTS)) $(LIBS)
 
+test:
+	test -e $(TARGETS)
+
 clean:
-	rm -f $(patsubst %.o,obj/%.o,$(OBJECTS)) $(TARGET)
+	rm -f $(patsubst %.o,obj/%.o,$(OBJECTS)) $(TARGETS)
 
 $(patsubst %.o,obj/%.o,$(OBJECTS)): obj/%.o: %.cpp
 	$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) $(DEFS) -o $@ $<

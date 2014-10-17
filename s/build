@@ -1,2 +1,8 @@
 #!/bin/sh
-./configure && make
+if [ ! -d .git ] ; then
+  echo "must be run from git root"
+  exit 1
+else
+  mkdir -p obj bin
+  ./configure && make
+fi
