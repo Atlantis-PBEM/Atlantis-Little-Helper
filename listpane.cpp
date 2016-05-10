@@ -99,7 +99,8 @@ void CListPane::SetSortName(unsigned short key, const char * sortname)
         free((void*)m_SortKey[key]);
     }
 
-    m_SortKey[key] = sortname?strdup(sortname):NULL;
+    // sortname is always non-NULL (or we exit at the top)
+    m_SortKey[key] = strdup(sortname);
 
     // set new sort caption
     for (key=0; key<NUM_SORTS-1; key++)

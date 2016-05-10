@@ -633,6 +633,8 @@ void CStr::Format(const char * lpszFormat, va_list argList)
         m_nStrLen = strlen(m_pData);
         if (err<nMaxLen)
             break;
+        // FIXME: if err is not less than nMaxLen (no break), then
+        // how can it be less than 0? dead code!
         if (err<0)
             nMaxLen <<= 1;    // just double it, man ;)))
         else
