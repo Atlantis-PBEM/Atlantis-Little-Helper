@@ -327,12 +327,15 @@ void  CListHeaderEditDlg::AddItem()
         pField->PropName = Dummy.PropName;
         pField->Caption  = Dummy.PropName;
 
-        if (!m_Fields.Insert(pField))
+        if (!m_Fields.Insert(pField)) {
             delete pField;
+            pField = NULL;
+        }
     }
-    m_lstDest->InsertItem(m_DestIdx+1, wxString::FromAscii(pField->PropName.GetData()));
-    m_lstDest->SetItemState(m_DestIdx+1, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
-//    m_txtCaption->SetValue(wxString::FromAscii(pField->Caption.GetData()));
+    if (pField) {
+        m_lstDest->InsertItem(m_DestIdx+1, wxString::FromAscii(pField->PropName.GetData()));
+        m_lstDest->SetItemState(m_DestIdx+1, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+    }
     m_SetIsValid = TRUE;
 }
 
