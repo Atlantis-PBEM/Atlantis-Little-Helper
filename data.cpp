@@ -649,7 +649,7 @@ void CLand::CalcStructsLoad()
 
 void CLand::RemoveEdgeStructs(int direction)
 {
-    CStruct * pEdge = new CStruct;
+    CStruct * pEdge;
     for (int i=EdgeStructs.Count()-1; i>=0; i--)
     {
         pEdge = (CStruct*) EdgeStructs.At(i);
