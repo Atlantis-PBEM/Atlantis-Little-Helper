@@ -949,6 +949,7 @@ int CAtlaParser::ParseAttitudes(CStr & Line, BOOL Join)
                         break;
                     case '.':
                         m_FactionInfo << EOL_SCR;
+                        break;
                     case ',':
                         if((attitude <= ATT_UNDECLARED) && (attitude >= ATT_FRIEND1))
                         {
