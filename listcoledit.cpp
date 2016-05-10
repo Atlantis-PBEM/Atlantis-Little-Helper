@@ -66,7 +66,7 @@ END_EVENT_TABLE()
 //--------------------------------------------------------------------------
 
 CListHeaderEditDlg::CListHeaderEditDlg(wxWindow *parent, const char * szWorkKey)
-              :CResizableDlg( parent, "Edit list column set", SZ_SECT_WND_LST_COLEDIT_DLG)//, wxDEFAULT_DIALOG_STYLE)
+              :CResizableDlg( parent, "Edit list column set", SZ_SECT_WND_LST_COLEDIT_DLG)// , wxDEFAULT_DIALOG_STYLE)
 {
     wxBoxSizer   * topsizer;
     wxBoxSizer   * rowsizer;
