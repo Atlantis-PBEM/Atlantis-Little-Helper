@@ -643,6 +643,7 @@ void CStr::Format(const char * lpszFormat, va_list argList)
                               // would have been written to  the  final  string  if  enough
                               // space had been available.
     }
+    va_end(argListSave);
 }
 
 //--------------------------------------------------------------------------
