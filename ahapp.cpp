@@ -97,9 +97,10 @@ CAhApp::CAhApp() : m_HexDescrSrc    (128),
     m_FontDescr[FONT_VIEW_DLG  ]  = "View dialogs";
     m_FontDescr[FONT_ERR_DLG   ]  = "Messages and Errors";
 
-
-
-
+    m_pAtlantis = NULL;
+    m_Brightness_Delta = 0;
+    m_nStdoutLastPos = 0;
+    m_nStderrLastPos = 0;
 }
 
 CAhApp::~CAhApp()
