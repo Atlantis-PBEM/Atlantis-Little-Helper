@@ -308,8 +308,13 @@ void CMapFrame::MakeToolBar()
 
     toolBar = CreateToolBar(wxNO_BORDER | wxTB_FLAT | wxTB_VERTICAL);
 
-    for (i=0; i<TOOLCOUNT; i++)
-        toolBar->AddTool(tool_zoomin+i, toolBarBitmap[i], toolTip[i]);
+    for (i=0; i<TOOLCOUNT; i++) {
+        toolBar->AddTool(tool_zoomin+i, 
+                         wxEmptyString, 
+                         toolBarBitmap[i], wxNullBitmap,
+                         wxITEM_NORMAL,
+                         toolTip[i], wxEmptyString, NULL);
+    }
 
     toolBar->Realize();
     toolBar->SetRows(TOOLCOUNT+1);

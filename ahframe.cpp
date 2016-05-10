@@ -45,7 +45,7 @@ END_EVENT_TABLE()
 //--------------------------------------------------------------------------
 
 CFlatPanel::CFlatPanel(wxWindow* parent)
-          :wxPanel(parent, -1, wxDefaultPosition, wxDefaultSize, wxNO_3D  )
+          :wxPanel(parent, -1, wxDefaultPosition, wxDefaultSize)
 {
     m_pChild = NULL;
 }
@@ -193,6 +193,8 @@ END_EVENT_TABLE()
 CResizableDlg::CResizableDlg(wxWindow * parent, const char * title, const char * szConfigSection, long style)
               :wxDialog( parent, -1, wxString::FromAscii(title), wxDefaultPosition, wxDefaultSize, style | wxCAPTION  )
 {
+    // FIXME: modal dialogs?
+    // style | wxDIALOG_MODAL used to be the default here
     m_sConfigSection = szConfigSection;
 }
 

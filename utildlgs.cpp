@@ -109,7 +109,7 @@ void CShowOneDescriptionDlg::OnButton(wxCommandEvent& event)
                             wxT(""),
                             wxT(""),
                             wxT(SZ_ALL_FILES),
-                            wxSAVE |  wxOVERWRITE_PROMPT );
+                            wxFD_SAVE |  wxFD_OVERWRITE_PROMPT );
         err = dialog.ShowModal();
         wxSetWorkingDirectory(CurrentDir);
 
@@ -237,7 +237,7 @@ void CShowDescriptionListDlg::SaveAs()
                         wxT(""),
                         wxT(""),
                         wxT(SZ_ALL_FILES),
-                        wxSAVE |  wxOVERWRITE_PROMPT );
+                        wxFD_SAVE |  wxFD_OVERWRITE_PROMPT );
     err = dialog.ShowModal();
     wxSetWorkingDirectory(CurrentDir);
 
@@ -470,7 +470,7 @@ void CExportMagesCSVDlg::OnButton(wxCommandEvent& event)
                                 wxT(""),
                                 m_pFileName->GetValue(),
                                 wxT(SZ_CSV_FILES),
-                                wxSAVE |  wxOVERWRITE_PROMPT );
+                                wxFD_SAVE | wxFD_OVERWRITE_PROMPT );
             err = dialog.ShowModal();
             wxSetWorkingDirectory(CurrentDir);
 
@@ -597,7 +597,7 @@ void CHexExportDlg::OnButton(wxCommandEvent& event)
                             wxT(""),
                             m_tcFName->GetValue(),
                             wxT(SZ_ALL_FILES),
-                            wxSAVE  );
+                            wxFD_SAVE  );
         err = dialog.ShowModal();
         wxSetWorkingDirectory(CurrentDir);
 

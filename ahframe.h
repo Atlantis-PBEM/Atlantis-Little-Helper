@@ -69,7 +69,7 @@ private:
 class CResizableDlg : public wxDialog
 {
 public:
-    CResizableDlg(wxWindow * parent, const char * title, const char * szConfigSection, long style = wxDIALOG_MODAL | wxRESIZE_BORDER | wxSYSTEM_MENU );
+    CResizableDlg(wxWindow * parent, const char * title, const char * szConfigSection, long style = wxRESIZE_BORDER | wxSYSTEM_MENU );
 
 protected:
     void SetSize();

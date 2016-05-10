@@ -1579,7 +1579,7 @@ int  CAhApp::SaveOrders(const char * FNameOut, int FactionId)
                             wxString::FromAscii(Dir.GetData()),
                             wxString::FromAscii(File.GetData()),
                             wxT(SZ_ORD_FILES),
-                            wxSAVE | wxOVERWRITE_PROMPT );
+                            wxFD_SAVE | wxFD_OVERWRITE_PROMPT );
         err = dialog.ShowModal();
         wxSetWorkingDirectory(CurrentDir);
 
@@ -2751,7 +2751,7 @@ int  CAhApp::LoadReport(BOOL Join)
                         wxString::FromAscii(Dir.GetData()),
                         wxT(""),
                         wxT(SZ_REP_FILES),
-                        wxOPEN);
+                        wxFD_OPEN);
     rc = dialog.ShowModal();
     wxSetWorkingDirectory(CurrentDir);
 
@@ -3472,7 +3472,7 @@ void CAhApp::LoadOrders()
                         wxString::FromAscii(Dir.GetData()),
                         wxT(""),
                         wxT(SZ_ORD_FILES),
-                        wxOPEN );
+                        wxFD_OPEN );
     rc = dialog.ShowModal();
     wxSetWorkingDirectory(CurrentDir);
 

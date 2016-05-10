@@ -3360,8 +3360,8 @@ void CMapPane::PaintRectangle(wxDC * pDC)
 {
     if (ShouldDrawRectangle())
     {
-        int     OldFunc = pDC->GetLogicalFunction();
-        wxPen   OldPen  = pDC->GetPen();
+        wxRasterOperationMode OldFunc = pDC->GetLogicalFunction();
+        wxPen OldPen = pDC->GetPen();
         pDC->SetLogicalFunction(wxXOR);
 
         pDC->SetPen  (*m_pPenSel);//m_pPenRed);

@@ -91,7 +91,7 @@ END_EVENT_TABLE()
 //--------------------------------------------------------------------
 
 CEditPane::CEditPane(wxWindow* parent, const char * header, BOOL editable, int WhichFont)
-          :wxPanel(parent, -1, wxDefaultPosition, wxDefaultSize, wxNO_3D  )
+          :wxPanel(parent, -1, wxDefaultPosition, wxDefaultSize)
 {
     m_pSource       = NULL;   
     m_pChanged      = NULL; 
