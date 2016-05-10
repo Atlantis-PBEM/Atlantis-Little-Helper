@@ -6745,7 +6745,7 @@ void CAtlaParser::OrderProcess_Teach(BOOL skiperror, CUnit * pUnit)
             // n1 - number of teachers
             // nstud - number of students
 
-            if (nstud>0)
+            if (nstud>0 && n1>0)
             {
                 pUnit ->Teaching = (double)nstud/n1;
                 teach = (double)n1*STUDENTS_PER_TEACHER/nstud*30;

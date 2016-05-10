@@ -1404,6 +1404,7 @@ void CMapPane::DrawUnits(wxDC * pDC, CLand * pLand, wxPoint * point)
     long          x;
     EValueType    type;
 
+    wxASSERT(pLand);
     if (m_bAdvancedIcons)
     {
         // set unit color
@@ -1426,27 +1427,27 @@ void CMapPane::DrawUnits(wxDC * pDC, CLand * pLand, wxPoint * point)
         GetNextIconPos(point, BOTTOM_LEFT_CORNER);
     
         // show flag icon for guards' stance
-        BOOL mark = pLand && pLand->AlarmFlags&PRESENCE_OWN;
-        if(pLand&&pLand->AlarmFlags&GUARDED)
+        BOOL mark = pLand->AlarmFlags&PRESENCE_OWN;
+        if (pLand->AlarmFlags&GUARDED)
         {
-            if(pLand&&pLand->AlarmFlags&GUARDED_BY_OWN)
+            if(pLand->AlarmFlags&GUARDED_BY_OWN)
             {
                 color = ATT_FRIEND2;
                 mark=FALSE;
             }
-            else if (pLand&&pLand->AlarmFlags&GUARDED_BY_FRIEND) color = ATT_FRIEND1;
-            else if (pLand&&pLand->AlarmFlags&GUARDED_BY_ENEMY)  color = ATT_ENEMY;
+            else if (pLand->AlarmFlags&GUARDED_BY_FRIEND) color = ATT_FRIEND1;
+            else if (pLand->AlarmFlags&GUARDED_BY_ENEMY)  color = ATT_ENEMY;
             else color = ATT_NEUTRAL;
             DrawFlagIcon(pDC, SymLeft, SymBottom, *m_pUnitColor[color], *m_pDarkColor[color], (x>m_MinSelMen), mark);
         } else // draw normal shield
         {
-            if(pLand&&pLand->AlarmFlags&CLAIMED_BY_OWN)
+            if(pLand->AlarmFlags&CLAIMED_BY_OWN)
             {
                 color = ATT_FRIEND2;
                 mark=FALSE;
             }
-            else if (pLand&&pLand->AlarmFlags&CLAIMED_BY_FRIEND) color = ATT_FRIEND1;
-            else if (pLand&&pLand->AlarmFlags&CLAIMED_BY_ENEMY)  color = ATT_ENEMY;
+            else if (pLand->AlarmFlags&CLAIMED_BY_FRIEND) color = ATT_FRIEND1;
+            else if (pLand->AlarmFlags&CLAIMED_BY_ENEMY)  color = ATT_ENEMY;
             else color = ATT_NEUTRAL;
             DrawShieldIcon(pDC, SymLeft, SymBottom, *m_pUnitColor[color], *m_pDarkColor[color], (x>m_MinSelMen), mark);
         }
@@ -1460,7 +1461,7 @@ void CMapPane::DrawUnits(wxDC * pDC, CLand * pLand, wxPoint * point)
             // juggle the order of FRIEND1 / FRIEND2 !
             if(side==ATT_FRIEND1) side = ATT_FRIEND2;
             else if(side==ATT_FRIEND2) side = ATT_FRIEND1;
-            if(pLand && (pLand->Troops[side] > 0))
+            if(pLand->Troops[side] > 0)
             {
                 xc += 2;
                 wxPen * pen = new wxPen(*m_pUnitColor[side],1,wxSOLID);
@@ -1474,7 +1475,7 @@ void CMapPane::DrawUnits(wxDC * pDC, CLand * pLand, wxPoint * point)
     
         GetNextIconPos(point, BOTTOM_RIGHT_CORNER);
         // draw alarm icon
-        if((m_Detail>=TOWN_DETAIL)&&pLand&&(pLand->AlarmFlags&ALARM))
+        if((m_Detail>=TOWN_DETAIL)&&(pLand->AlarmFlags&ALARM))
         {
             xc=SymLeft; //+18;
             if(pLand->AlarmFlags&PRESENCE_ENEMY) color = ATT_ENEMY;
@@ -2997,6 +2998,11 @@ void CMapPane::DrawSingleTrack(int X, int Y, int wx, int wy, wxDC * pDC, CUnit *
         }
     }
 
+    if (!pUnit->pMovement) {
+        // TODO: Investigate. I am unsure why pMovement would ever be 
+        // NULL, but it might be mutually exclusive with pMoveA3Points?
+        return;
+    }
     for (i=0; i<pUnit->pMovement->Count(); i++)
     {
         wx0 = wx;
